@@ -53,6 +53,8 @@ abstract class Routes {
   static const String SPLASH = '/splash';
   static const String TERMS = '/terms';
   static const String VERIFY_OTP = '/verify-otp';
+  static const String REGISTER_EQUIPMENT = '/register-equipment';
+  static const String ADD_EQUIPMENT = '/add-equipment';
 }
 
 Future<bool> _authStatus() async {
@@ -163,6 +165,16 @@ class AppRouter {
         path: Routes.HOME,
         name: Routes.HOME,
         builder: (_, state) => const HomeScreen(),
+      ),
+      GoRoute(
+        path: Routes.REGISTER_EQUIPMENT,
+        name: Routes.REGISTER_EQUIPMENT,
+        builder: (_, state) => const RegisterEquipment(),
+      ),
+      GoRoute(
+        path: Routes.ADD_EQUIPMENT,
+        name: Routes.ADD_EQUIPMENT,
+        builder: (_, state) => const AddEquipmentScreen(),
       ),
       GoRoute(
         path: Routes.PROFILE,

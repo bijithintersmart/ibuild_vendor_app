@@ -1,5 +1,6 @@
 import 'package:animate_equipment_view/animate_equipment_view.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ibuild_vendor/core/router/go_route.dart';
 import 'package:ibuild_vendor/core/theme/app_colors.dart';
 import 'package:ibuild_vendor/features/equipments/data/models/equipment_model.dart';
@@ -87,13 +88,14 @@ class _EquipmentScreenState extends State<EquipmentScreen>
         floatingActionButton: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 5),
           child: ElevatedButton.icon(
-              onPressed: () {},
+              onPressed: () {
+                GoRouter.of(context).push(Routes.ADD_EQUIPMENT);
+              },
               style: ElevatedButton.styleFrom(minimumSize: const Size(150, 40),
                 backgroundColor: AppColors.secondary,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(5),
                 ),
-                // padding: const EdgeInsets.symmetric(horizontal: 20),
               ),
               icon: const Icon(
                 Icons.handyman,

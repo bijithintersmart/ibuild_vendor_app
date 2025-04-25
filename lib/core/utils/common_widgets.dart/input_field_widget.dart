@@ -113,12 +113,10 @@ class InputField extends StatelessWidget {
             child: NormalText(
               text: title,
               style: titleStyle ??
-                  const TextStyle(
-                    color: Colors.black,
-                    fontSize: 12,
-                    fontFamily: 'Canaro',
-                    fontWeight: FontWeight.w600,
-                  ),
+                  Theme.of(context).textTheme.bodySmall!.copyWith(
+                        color: Colors.black,
+                        fontSize: 12,
+                      ),
             ),
           ),
         TextFormField(
