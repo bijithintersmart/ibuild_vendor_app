@@ -64,7 +64,7 @@ class PendingCardWidget extends StatelessWidget {
                 ],
               ),
               child: Text(
-                'Waiting for Approval',
+                'Rejected',
                 style: Theme.of(context)
                     .textTheme
                     .bodySmall!

@@ -52,7 +52,7 @@ class _AddEquipmentScreenState extends State<AddEquipmentScreen> {
             const SizedBox(
               height: 10,
             ),
-            const CategorizedVehicleDropdowns(),
+            const CategoryDropdown(),
             const SizedBox(
               height: 10,
             ),
@@ -80,6 +80,9 @@ class _AddEquipmentScreenState extends State<AddEquipmentScreen> {
                     color: Colors.black,
                     fontSize: 12,
                   ),
+            ),
+            const SizedBox(
+              height: 10,
             ),
             Row(
               children: [
@@ -122,6 +125,9 @@ class _AddEquipmentScreenState extends State<AddEquipmentScreen> {
                     color: Colors.black,
                     fontSize: 12,
                   ),
+            ),
+            const SizedBox(
+              height: 10,
             ),
             Row(
               children: [

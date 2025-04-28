@@ -29,9 +29,10 @@ class _HomePendingOrderWidgetState extends State<HomePendingOrderWidget> {
               height: 10,
             ),
             shrinkWrap: true,
-            itemCount: 4,
+            itemCount: 3,
             itemBuilder: (_, i) {
               return ListTile(
+                tileColor: Colors.grey.withOpacity(.1),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                     side: BorderSide(

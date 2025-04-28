@@ -34,7 +34,9 @@ class AnimatedEquipmentCard extends StatelessWidget {
   }
 
   Widget _buildListViewCard(BuildContext context) {
-    return Container(
+    return AnimatedContainer(
+      duration: Duration(milliseconds: 300),
+      curve: Curves.easeIn,
       margin: const EdgeInsets.only(bottom: 16),
       decoration: BoxDecoration(
         color: AppColors.cardGrey,
@@ -71,7 +73,9 @@ class AnimatedEquipmentCard extends StatelessWidget {
       children: [
         Align(
           alignment: Alignment.bottomCenter,
-          child: Container(
+          child: AnimatedContainer(
+            duration: Duration(milliseconds: 300),
+            curve: Curves.easeIn,
             height: 150,
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
             decoration: BoxDecoration(
@@ -137,7 +141,9 @@ class AnimatedEquipmentCard extends StatelessWidget {
           top: 25,
           left: -7,
           right: -7,
-          child: Container(
+          child: AnimatedContainer(
+            duration: Duration(milliseconds: 300),
+            curve: Curves.easeIn,
             clipBehavior: Clip.antiAlias,
             height: 140,
             margin: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
@@ -165,7 +171,9 @@ class AnimatedEquipmentCard extends StatelessWidget {
     BoxFit fit = BoxFit.cover,
     required BorderRadius borderRadius,
   }) {
-    return Container(
+    return AnimatedContainer(
+      duration: Duration(milliseconds: 300),
+      curve: Curves.easeIn,
       height: height,
       width: viewType == CardViewType.grid ? 90 : null,
       decoration: BoxDecoration(
