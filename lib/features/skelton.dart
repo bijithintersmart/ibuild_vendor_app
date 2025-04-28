@@ -21,94 +21,97 @@ class Skelton extends StatefulWidget {
 }
 
 class _SkeltonState extends State<Skelton> {
+  static const iconColor = Color(0xff475467);
+  static const iconSize = 25.0;
   @override
   void initState() {
     super.initState();
   }
+
+  final List<PersistentTabConfig> screens = [
+    PersistentTabConfig(
+      screen: const HomeScreen(),
+      item: ItemConfig(
+        icon: const Icon(Icons.home_outlined, size: iconSize),
+        inactiveIcon: const Icon(
+          Icons.home_outlined,
+          size: iconSize,
+          color: iconColor,
+        ),
+        title: "Home",
+        activeForegroundColor: AppColors.secondary,
+        inactiveBackgroundColor: iconColor,
+      ),
+    ),
+    PersistentTabConfig(
+        screen: const EquipmentScreen(),
+        item: ItemConfig(
+          icon: const Icon(
+            Icons.local_shipping,
+            size: iconSize,
+          ),
+          inactiveIcon: const Icon(
+            Icons.local_shipping_outlined,
+            size: iconSize,
+            color: iconColor,
+          ),
+          title: "Equipments",
+          activeForegroundColor: AppColors.secondary,
+          inactiveBackgroundColor: iconColor,
+        )),
+    PersistentTabConfig(
+        screen: const BookingScreen(),
+        item: ItemConfig(
+          icon: const Icon(
+            Icons.calendar_month,
+            size: iconSize,
+          ),
+          inactiveIcon: const Icon(
+            Icons.calendar_month_outlined,
+            size: iconSize,
+            color: iconColor,
+          ),
+          title: "Bookings",
+          activeForegroundColor: AppColors.secondary,
+          inactiveBackgroundColor: iconColor,
+        )),
+    PersistentTabConfig(
+        screen: const NotificationListScreen(),
+        item: ItemConfig(
+          icon: const Icon(
+            Icons.notifications,
+            size: iconSize,
+          ),
+          inactiveIcon: const Icon(Icons.notifications_outlined,
+              size: iconSize, color: iconColor),
+          title: "Notifications",
+          activeForegroundColor: AppColors.secondary,
+          inactiveBackgroundColor: iconColor,
+        )),
+    PersistentTabConfig(
+        screen: const ProfileScreen(),
+        item: ItemConfig(
+          icon: const Icon(
+            Icons.person,
+            size: iconSize,
+          ),
+          inactiveIcon: const Icon(
+            Icons.person_outline,
+            size: iconSize,
+            color: iconColor,
+          ),
+          title: "Profile",
+          activeForegroundColor: AppColors.secondary,
+          inactiveBackgroundColor: iconColor,
+        )),
+  ];
+  
   @override
   Widget build(BuildContext context) {
-    const iconColor = Color(0xff475467);
-    const iconSize = 25.0;
     return PersistentTabView(
       controller: widget.controller,
       backgroundColor: Colors.transparent,
-      tabs: [
-        PersistentTabConfig(
-          screen: const HomeScreen(),
-          item: ItemConfig(
-            icon: const Icon(Icons.home_outlined, size: iconSize),
-            inactiveIcon: const Icon(
-              Icons.home_outlined,
-              size: iconSize,
-              color: iconColor,
-            ),
-            title: "Home",
-            activeForegroundColor: AppColors.secondary,
-            inactiveBackgroundColor: iconColor,
-          ),
-        ),
-        PersistentTabConfig(
-            screen: const EquipmentScreen(),
-            item: ItemConfig(
-              icon: const Icon(
-                Icons.local_shipping,
-                size: iconSize,
-              ),
-              inactiveIcon: const Icon(
-                Icons.local_shipping_outlined,
-                size: iconSize,
-                color: iconColor,
-              ),
-              title: "Equipments",
-              activeForegroundColor: AppColors.secondary,
-              inactiveBackgroundColor: iconColor,
-            )),
-        PersistentTabConfig(
-            screen: const BookingScreen(),
-            item: ItemConfig(
-              icon: const Icon(
-                Icons.calendar_month,
-                size: iconSize,
-              ),
-              inactiveIcon: const Icon(
-                Icons.calendar_month_outlined,
-                size: iconSize,
-                color: iconColor,
-              ),
-              title: "Bookings",
-              activeForegroundColor: AppColors.secondary,
-              inactiveBackgroundColor: iconColor,
-            )),
-        PersistentTabConfig(
-            screen: const NotificationListScreen(),
-            item: ItemConfig(
-              icon: const Icon(
-                Icons.notifications,
-                size: iconSize,
-              ),
-              inactiveIcon: const Icon(Icons.notifications_outlined,
-                  size: iconSize, color: iconColor),
-              title: "Notifications",
-              activeForegroundColor: AppColors.secondary,
-              inactiveBackgroundColor: iconColor,
-            )),
-        PersistentTabConfig(
-            screen: const ProfileScreen(),
-            item: ItemConfig(
-              icon: const Icon(
-                Icons.person,
-                size: iconSize,
-              ),
-              inactiveIcon: const Icon(
-                Icons.person_outline,
-                size: iconSize,
-                color: iconColor,
-              ),
-              title: "Profile",
-              activeForegroundColor: AppColors.secondary,
-              inactiveBackgroundColor: iconColor,
-            )),
-      ],
+      tabs: screens,
       navBarBuilder: (navBarConfig) => Style1BottomNavBar(
         navBarConfig: navBarConfig.copyWith(),
         navBarDecoration: const NavBarDecoration(

@@ -136,7 +136,7 @@ class ConfirmedCardWidget extends StatelessWidget {
                               minimumSize: const Size(200, 35)),
                           onPressed: () {},
                           child: NormalText(
-                              text: "Book Overtime",
+                              text: "Approve Overtime",
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium!
