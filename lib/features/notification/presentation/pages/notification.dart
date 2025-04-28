@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ibuild_vendor/core/router/go_route.dart';
 import 'package:ibuild_vendor/core/theme/app_colors.dart';
+import 'package:ibuild_vendor/core/utils/app_utils/functions.dart';
 import 'package:ibuild_vendor/core/utils/common_widgets.dart/normal_text.dart';
 import 'package:ibuild_vendor/features/notification/data/models/notification_model.dart';
 import 'package:intl/intl.dart';
@@ -28,16 +29,14 @@ class _NotificationListScreenState extends State<NotificationListScreen> {
   }
 
   // Method to mark all notifications as read
-  void _markAllAsRead() {
-    setState(() {
-      for (var notification in notifications) {
-        notification.isRead = true;
-      }
-    });
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('All notifications marked as read')),
-    );
-  }
+  // void _markAllAsRead() {
+  //   setState(() {
+  //     for (var notification in notifications) {
+  //       notification.isRead = true;
+  //     }
+  //   });
+  //   scaffoldToast('All notifications marked as read');
+  // }
 
   // Method to clear all notifications
   void _clearAllNotifications() {
@@ -45,25 +44,62 @@ class _NotificationListScreenState extends State<NotificationListScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Clear All Notifications'),
-          content:
-              const Text('Are you sure you want to delete all notifications?'),
+          backgroundColor: Colors.white,
+          title: Text(
+            'Clear All Notifications',
+            style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black,
+                ),
+          ),
+          content: Text(
+            'Are you sure you want to delete all notifications?',
+            style: Theme.of(context)
+                .textTheme
+                .bodyMedium!
+                .copyWith(color: Colors.black),
+          ),
           actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('CANCEL'),
-            ),
-            TextButton(
-              onPressed: () {
-                setState(() {
-                  notifications.clear();
-                });
-                Navigator.of(context).pop();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('All notifications cleared')),
-                );
-              },
-              child: const Text('DELETE'),
+            Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        minimumSize: const Size(double.infinity, 35)),
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: Text(
+                      'CANCEL',
+                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                Expanded(
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        minimumSize: const Size(double.infinity, 35)),
+                    onPressed: () {
+                      setState(() {
+                        notifications.clear();
+                      });
+                      Navigator.of(context).pop();
+                      scaffoldToast('All notifications cleared');
+                    },
+                    child: Text(
+                      'DELETE',
+                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         );
@@ -91,8 +127,6 @@ class _NotificationListScreenState extends State<NotificationListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Count unread notifications
-    final unreadCount = notifications.where((item) => !item.isRead).length;
     final primaryColor = Theme.of(context).primaryColor;
 
     return Scaffold(
@@ -106,16 +140,17 @@ class _NotificationListScreenState extends State<NotificationListScreen> {
         title: NormalText(
           text: 'Notifications',
           style: Theme.of(context).textTheme.titleMedium,
-        ),centerTitle: true,
+        ),
+        centerTitle: true,
         backgroundColor: Colors.white,
         elevation: 0,
         actions: [
           if (notifications.isNotEmpty) ...[
-            IconButton(
-              icon: const Icon(Icons.done_all),
-              tooltip: 'Mark all as read',
-              onPressed: _markAllAsRead,
-            ),
+            // IconButton(
+            //   icon: const Icon(Icons.done_all),
+            //   tooltip: 'Mark all as read',
+            //   onPressed: _markAllAsRead,
+            // ),
             IconButton(
               icon: const Icon(Icons.delete_sweep),
               tooltip: 'Clear all notifications',
@@ -189,17 +224,15 @@ class _NotificationListScreenState extends State<NotificationListScreen> {
                   },
                   onDismissed: (direction) {
                     _deleteNotification(notification.id);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: const Text('Notification deleted'),
-                        action: SnackBarAction(
-                          label: 'UNDO',
-                          onPressed: () {
-                            setState(() {
-                              notifications.insert(index, notification);
-                            });
-                          },
-                        ),
+                    scaffoldToast(
+                      'Notification deleted',
+                      action: SnackBarAction(
+                        label: 'UNDO',
+                        onPressed: () {
+                          setState(() {
+                            notifications.insert(index, notification);
+                          });
+                        },
                       ),
                     );
                   },
@@ -256,12 +289,8 @@ class _NotificationListScreenState extends State<NotificationListScreen> {
                         isThreeLine: true,
                         onTap: () {
                           _markAsRead(notification.id);
-                          // Here you would typically navigate to a detail view or perform an action
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                                content: Text(
-                                    'Viewed notification: ${notification.title}')),
-                          );
+                          scaffoldToast(
+                              'Viewed notification: ${notification.title}');
                         },
                       ),
                     ),
@@ -269,14 +298,6 @@ class _NotificationListScreenState extends State<NotificationListScreen> {
                 );
               },
             ),
-      floatingActionButton: unreadCount > 0
-          ? FloatingActionButton.extended(
-              onPressed: _markAllAsRead,
-              icon: const Icon(Icons.done_all),
-              label: Text('Mark all read ($unreadCount)'),
-              backgroundColor: primaryColor,
-            )
-          : null,
     );
   }
 }
