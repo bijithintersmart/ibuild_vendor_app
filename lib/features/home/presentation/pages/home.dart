@@ -29,25 +29,30 @@ class _HomeScreenState extends State<HomeScreen> {
             child: SvgPicture.asset(AppSvgs.appLogoText),
           ),
           actions: [
-            badges.Badge(
-              position: badges.BadgePosition.topEnd(top: -15, end: -10),
-              showBadge: true,
-              ignorePointer: true,
-              onTap: () {},
-              badgeContent: Text(
-                "3",
-                style: Theme.of(context)
-                    .textTheme
-                    .bodySmall!
-                    .copyWith(color: AppColors.primary),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20,
               ),
-              badgeStyle: badges.BadgeStyle(
-                shape: badges.BadgeShape.circle,
-                badgeColor: AppColors.secondary,
+              child: badges.Badge(
+                position: badges.BadgePosition.topEnd(top: -15, end: -10),
+                showBadge: true,
+                ignorePointer: true,
+                onTap: () {},
+                badgeContent: Text(
+                  "3",
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodySmall!
+                      .copyWith(color: AppColors.primary),
+                ),
+                badgeStyle: badges.BadgeStyle(
+                  shape: badges.BadgeShape.circle,
+                  badgeColor: AppColors.secondary,
                   padding: const EdgeInsets.all(6),
-                elevation: 0,
+                  elevation: 0,
+                ),
+                child: const Icon(Icons.notifications_outlined),
               ),
-              child: const Icon(Icons.notifications_outlined),
             ),
           ],
         ),
@@ -60,7 +65,9 @@ class _HomeScreenState extends State<HomeScreen> {
             HomeUpcommingWidget(),
             HomePendingOrderWidget(),
             CompletedOrdersWidget(),
-            SizedBox(height: 80),
+            SizedBox(
+              height: kBottomNavigationBarHeight,
+            ),
           ],
         ),
       ),

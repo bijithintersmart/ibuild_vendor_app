@@ -8,7 +8,7 @@ import 'package:ibuild_vendor/features/equipments/presentation/widgets/equiment_
 
 import '../widgets/equiment_grid_view.dart';
 
-enum FavoriteShape { gird, list }
+enum ScreenLayout { gird, list }
 
 typedef OnPressedCard = Function(int index);
 
@@ -21,7 +21,7 @@ class EquipmentScreen extends StatefulWidget {
 
 class _EquipmentScreenState extends State<EquipmentScreen>
     with SingleTickerProviderStateMixin {
-  late ValueNotifier<FavoriteShape> _switchNotifier;
+  late ValueNotifier<ScreenLayout> _switchNotifier;
   late TabController _tabController;
 
   @override
@@ -34,7 +34,7 @@ class _EquipmentScreenState extends State<EquipmentScreen>
   @override
   void initState() {
     super.initState();
-    _switchNotifier = ValueNotifier(FavoriteShape.gird);
+    _switchNotifier = ValueNotifier(ScreenLayout.gird);
     _tabController = TabController(length: 2, vsync: this);
   }
 
@@ -59,8 +59,8 @@ class _EquipmentScreenState extends State<EquipmentScreen>
               fillColor: AppColors.secondary,
               child: Icon(
                 _tabController.index == 0
-                    ? Icons.grid_view_rounded
-                    : Icons.view_agenda_outlined,
+                    ? Icons.view_agenda_outlined
+                    : Icons.grid_view_rounded,
                 size: 20 - 4,
                 color: Colors.white,
               ),
@@ -72,43 +72,19 @@ class _EquipmentScreenState extends State<EquipmentScreen>
   }
 
   void _switchBetweenGridAndList() {
-    if (_switchNotifier.value == FavoriteShape.gird) {
+    if (_switchNotifier.value == ScreenLayout.gird) {
       _tabController.animateTo(1);
-      _switchNotifier.value = FavoriteShape.list;
+      _switchNotifier.value = ScreenLayout.list;
     } else {
       _tabController.animateTo(0);
-      _switchNotifier.value = FavoriteShape.gird;
+      _switchNotifier.value = ScreenLayout.gird;
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        floatingActionButton: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 5),
-          child: ElevatedButton.icon(
-              onPressed: () {
-                GoRouter.of(context).push(Routes.ADD_EQUIPMENT);
-              },
-              style: ElevatedButton.styleFrom(minimumSize: const Size(150, 40),
-                backgroundColor: AppColors.secondary,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5),
-                ),
-              ),
-              icon: const Icon(
-                Icons.handyman,
-                color: Colors.white,
-              ),
-              label: Text(
-                'Add New Equipment',
-                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-              )),
-        ),
+        extendBody: true,
         appBar: AppBar(
           leading: IconButton(
             icon: const Icon(Icons.arrow_back_ios_new_rounded),
@@ -129,38 +105,77 @@ class _EquipmentScreenState extends State<EquipmentScreen>
             IconButton(icon: const Icon(Icons.search), onPressed: () {}),
           ],
         ),
-        body: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        body: Padding(
+          padding: const EdgeInsets.only(bottom: 20),
+          child: Stack(
+            children: [
+              Column(
                 children: [
-                  Text(
-                    '${equipments.length} Items',
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 25, vertical: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          '${equipments.length} Items',
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        _buildSwitchGridAndListButton()
+                      ],
                     ),
                   ),
-                  _buildSwitchGridAndListButton()
-                ],
-              ),
-            ),
-            Expanded(
-              child: LocalHero(
-                controller: _tabController,
-                pages: [
-                  ListViewContent(
-                    basePageContext: context,
+                  Expanded(
+                    child: LocalHero(
+                      controller: _tabController,
+                      pages: [
+                        ListViewContent(
+                          basePageContext: context,
+                        ),
+                        GridViewContent(
+                          basePageContext: context,
+                        )
+                      ],
+                    ),
                   ),
-                  GridViewContent(
-                    basePageContext: context,
-                  )
                 ],
               ),
-            ),
-          ],
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  color: Colors.transparent,
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      GoRouter.of(context).push(Routes.ADD_EQUIPMENT);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: const Size(200, 40),
+                      backgroundColor: AppColors.secondary,
+                      shadowColor: Colors.transparent,
+                      elevation: 2,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                    ),
+                    icon: const Icon(
+                      Icons.handyman,
+                      color: Colors.white,
+                    ),
+                    label: Text(
+                      'Add New Equipment',
+                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ));
   }
 }

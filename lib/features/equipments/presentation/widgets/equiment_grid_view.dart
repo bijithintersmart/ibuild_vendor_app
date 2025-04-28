@@ -48,7 +48,7 @@ class _GridViewContentState extends State<GridViewContent> {
           index: index,
           equipmentData: equipments[index],
           onPressedCard: (index) {
-            GoRouter.of(context).push(Routes.BOOKING);
+            GoRouter.of(context).push(Routes.BOOKING_DATE);
           },
         ),
       ),
