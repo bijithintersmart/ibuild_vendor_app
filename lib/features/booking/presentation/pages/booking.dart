@@ -32,10 +32,10 @@ class _BookingCenterScreenState extends State<BookingScreen>
   void initState() {
     currentTabIndex = widget.initalTabIndex;
     tabController = FTabController(
-      // initialIndex: widget.initalTabIndex,
       length: 3,
       vsync: this,
-    );
+    )..addListener(
+        () => setState(() => currentTabIndex = tabController?.index ?? 0));
     super.initState();
   }
 
@@ -110,74 +110,129 @@ class _BookingCenterScreenState extends State<BookingScreen>
     );
   }
 
+  bool checkCurrentTap(int index) {
+    return tabController?.index == index;
+  }
+
   @override
   Widget build(BuildContext context) {
-    final List<Widget> _tabItems = [
-      _buildPendingList(),
-      _buildConfirmedList(),
-      _buildCompletedList()
-    ];
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 0,
-          centerTitle: true,
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
-            onPressed: () {
-              navController.jumpToTab(0);
-            },
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back_ios,
+            color: Colors.black,
           ),
-          title: NormalText(
-              text: 'Booking Center',
-              style: Theme.of(context)
-                  .textTheme
-                  .titleMedium!
-                  .copyWith(fontWeight: FontWeight.bold)),
+          onPressed: () {
+            navController.jumpToTab(0);
+          },
         ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15),
-          child: Builder(builder: (context) {
-            tabController?.animateTo(widget.initalTabIndex,
-                duration: const Duration(
-                  milliseconds: 400,
+        title: NormalText(
+            text: 'Booking Center',
+            style: Theme.of(context)
+                .textTheme
+                .titleMedium!
+                .copyWith(fontWeight: FontWeight.bold)),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: FTabs(
+          initialIndex: currentTabIndex,
+          // onPress: (value) {
+          //   setState(() {
+          //     currentTabIndex = value;
+          //   });
+          // },
+          controller: tabController,
+          style: FTabsStyle(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(100),
+              color: AppColors.cardGrey,
+            ),
+            selectedLabelTextStyle: Theme.of(context)
+                .textTheme
+                .bodyMedium!
+                .copyWith(fontWeight: FontWeight.w500, color: Colors.white),
+            unselectedLabelTextStyle:
+                Theme.of(context).textTheme.bodyMedium!.copyWith(
+                      fontWeight: FontWeight.w500,
+                    ),
+            indicatorDecoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(100),
+              color: AppColors.secondary,
+            ),
+            focusedOutlineStyle: FFocusedOutlineStyle(
+              borderRadius: BorderRadius.circular(10),
+              color: AppColors.secondary,
+            ),
+          ),
+          tabs: [
+            FTabEntry(
+              label: AnimatedDefaultTextStyle(
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeIn,
+                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                      fontWeight: checkCurrentTap(0)
+                          ? FontWeight.bold
+                          : FontWeight.w500,
+                      color: checkCurrentTap(0) ? Colors.white : Colors.black,
+                    ),
+                child: Text(
+                  _tabs[0],
                 ),
-                curve: Curves.easeIn);
-            return FTabs(
-                onPress: (value) {
-                  currentTabIndex = value;
-                },
-                controller: tabController,
-                style: FTabsStyle(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(100),
-                    color: AppColors.cardGrey,
-                  ),
-                  selectedLabelTextStyle: Theme.of(context)
-                      .textTheme
-                      .bodyMedium!
-                      .copyWith(
-                          fontWeight: FontWeight.w500, color: Colors.white),
-                  unselectedLabelTextStyle:
-                      Theme.of(context).textTheme.bodyMedium!.copyWith(
-                            fontWeight: FontWeight.w500,
-                          ),
-                  indicatorDecoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(100),
-                    color: AppColors.secondary,
-                  ),
-                  focusedOutlineStyle: FFocusedOutlineStyle(
-                    borderRadius: BorderRadius.circular(10),
-                    color: AppColors.secondary,
-                  ),
+              ),
+              content: _buildPendingList(),
+            ),
+            FTabEntry(
+              label: AnimatedDefaultTextStyle(
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeIn,
+                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                      fontWeight: checkCurrentTap(1)
+                          ? FontWeight.bold
+                          : FontWeight.w500,
+                      color: checkCurrentTap(1) ? Colors.white : Colors.black,
+                    ),
+                child: Text(
+                  _tabs[1],
+                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        fontWeight: checkCurrentTap(1)
+                            ? FontWeight.bold
+                            : FontWeight.w500,
+                        color: checkCurrentTap(1) ? Colors.white : Colors.black,
+                      ),
                 ),
-                tabs: List.generate(_tabs.length, (index) {
-                  return FTabEntry(
-                    label: Text(_tabs[index]),
-                    content: _tabItems[index],
-                  );
-                }));
-          }),
-        ));
+              ),
+              content: _buildConfirmedList(),
+            ),
+            FTabEntry(
+              label: AnimatedDefaultTextStyle(
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeIn,
+                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                      fontWeight: checkCurrentTap(2)
+                          ? FontWeight.bold
+                          : FontWeight.w500,
+                      color: checkCurrentTap(2) ? Colors.white : Colors.black,
+                    ),
+                child: Text(
+                  _tabs[2],
+                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        fontWeight: checkCurrentTap(2)
+                            ? FontWeight.bold
+                            : FontWeight.w500,
+                        color: checkCurrentTap(2) ? Colors.white : Colors.black,
+                      ),
+                ),
+              ),
+              content: _buildCompletedList(),
+            )
+          ],
+        ),
+      ),
+    );
   }
 }
