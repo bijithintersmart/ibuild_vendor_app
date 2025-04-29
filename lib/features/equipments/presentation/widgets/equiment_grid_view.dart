@@ -8,8 +8,12 @@ import 'base_card_view.dart';
 
 class GridViewContent extends StatefulWidget {
   const GridViewContent(
-      {super.key, required this.basePageContext, this.tabController});
+      {super.key,
+      required this.basePageContext,
+      this.tabController,
+      required this.equipments});
   final TabController? tabController;
+  final List<Equipment> equipments;
   final BuildContext basePageContext;
 
   @override
@@ -36,16 +40,16 @@ class _GridViewContentState extends State<GridViewContent> {
       controller: _scrollController,
       shrinkWrap: true,
       crossAxisCount: 2,
-      childAspectRatio: 16 / 26.4,
+      childAspectRatio: 16 / 19.5,
       mainAxisSpacing: 10,
       crossAxisSpacing: 10,
       padding: const EdgeInsets.symmetric(horizontal: 25),
       children: List.generate(
-        equipments.length,
+        widget.equipments.length,
         (index) => BaseCard(
           viewType: CardViewType.grid,
           index: index,
-          equipmentData: equipments[index],
+          equipmentData: widget.equipments[index],
           onPressedCard: (index) {
             GoRouter.of(context).push(Routes.BOOKING_DATE);
           },

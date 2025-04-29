@@ -1,14 +1,12 @@
 import 'package:animate_equipment_view/animate_equipment_view.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:ibuild_vendor/core/router/go_route.dart';
 import 'package:ibuild_vendor/core/theme/app_colors.dart';
+import 'package:ibuild_vendor/core/utils/common_widgets.dart/input_field_widget.dart';
 import 'package:ibuild_vendor/features/equipments/data/models/equipment_model.dart';
 import 'package:ibuild_vendor/features/equipments/presentation/widgets/equiment_list_view.dart';
 
 import '../widgets/equiment_grid_view.dart';
-
-enum ScreenLayout { gird, list }
 
 typedef OnPressedCard = Function(int index);
 
@@ -20,10 +18,14 @@ class EquipmentScreen extends StatefulWidget {
 }
 
 class _EquipmentScreenState extends State<EquipmentScreen>
-    with SingleTickerProviderStateMixin {
-  late ValueNotifier<ScreenLayout> _switchNotifier;
+    with TickerProviderStateMixin {
+  final TextEditingController _searchController = TextEditingController();
   late TabController _tabController;
+  late ValueNotifier<CardViewType> _switchNotifier;
 
+  bool _isSearching = false;
+  List<Equipment> _filteredEquipments = [];
+  List<Equipment> _allEquipments = equipments; // Your original list
   @override
   void dispose() {
     _tabController.dispose();
@@ -34,8 +36,23 @@ class _EquipmentScreenState extends State<EquipmentScreen>
   @override
   void initState() {
     super.initState();
-    _switchNotifier = ValueNotifier(ScreenLayout.gird);
+    _filteredEquipments = _allEquipments;
+    _switchNotifier = ValueNotifier(CardViewType.grid);
     _tabController = TabController(length: 2, vsync: this);
+  }
+
+  void _startSearch() {
+    setState(() {
+      _isSearching = true;
+    });
+  }
+
+  void _stopSearch() {
+    setState(() {
+      _isSearching = false;
+      _searchController.clear();
+      _filteredEquipments = _allEquipments;
+    });
   }
 
   Widget _buildSwitchGridAndListButton() {
@@ -72,110 +89,95 @@ class _EquipmentScreenState extends State<EquipmentScreen>
   }
 
   void _switchBetweenGridAndList() {
-    if (_switchNotifier.value == ScreenLayout.gird) {
+    if (_switchNotifier.value == CardViewType.grid) {
       _tabController.animateTo(1);
-      _switchNotifier.value = ScreenLayout.list;
+      _switchNotifier.value = CardViewType.list;
     } else {
       _tabController.animateTo(0);
-      _switchNotifier.value = ScreenLayout.gird;
+      _switchNotifier.value = CardViewType.grid;
     }
+  }
+
+  void _onSearchChanged(String query) {
+    setState(() {
+      _filteredEquipments = _allEquipments
+          .where(
+              (item) => item.name.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        extendBody: true,
-        appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios_new_rounded),
-            onPressed: () {
-              navController.jumpToTab(0);
-            },
-          ),
-          centerTitle: true,
-          title: Text(
-            'Equipments',
-            style: Theme.of(context)
-                .textTheme
-                .titleLarge!
-                .copyWith(fontWeight: FontWeight.bold),
-          ),
-          elevation: 3,
-          actions: [
-            IconButton(icon: const Icon(Icons.search), onPressed: () {}),
-          ],
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new_rounded),
+          onPressed: () {
+            navController.jumpToTab(0);
+          },
         ),
-        body: Padding(
-          padding: const EdgeInsets.only(bottom: 20),
-          child: Stack(
-            children: [
-              Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 25, vertical: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          '${equipments.length} Items',
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        _buildSwitchGridAndListButton()
-                      ],
+        title: _isSearching
+            ? InputField(
+                labelText: "",
+                controller: _searchController,
+                autofocus: true,
+                hintText: 'Search equipments...',
+                onChanged: _onSearchChanged,
+                borderColor: AppColors.borderGrey,
+              )
+            : Text(
+                'Equipments',
+                style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                      fontWeight: FontWeight.bold,
                     ),
-                  ),
-                  Expanded(
-                    child: LocalHero(
-                      controller: _tabController,
-                      pages: [
-                        ListViewContent(
-                          basePageContext: context,
-                        ),
-                        GridViewContent(
-                          basePageContext: context,
-                        )
-                      ],
-                    ),
-                  ),
-                ],
               ),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Container(
-                  color: Colors.transparent,
-                  child: ElevatedButton.icon(
-                    onPressed: () {
-                      GoRouter.of(context).push(Routes.ADD_EQUIPMENT);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: const Size(200, 40),
-                      backgroundColor: AppColors.secondary,
-                      shadowColor: Colors.transparent,
-                      elevation: 2,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                    ),
-                    icon: const Icon(
-                      Icons.handyman,
-                      color: Colors.white,
-                    ),
-                    label: Text(
-                      'Add New Equipment',
-                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                    ),
+        centerTitle: true,
+        elevation: 3,
+        actions: [
+          if (_isSearching)
+            IconButton(icon: const Icon(Icons.close), onPressed: _stopSearch)
+          else
+            IconButton(icon: const Icon(Icons.search), onPressed: _startSearch),
+        ],
+      ),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  '${_filteredEquipments.length} Items',
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-              ),
-            ],
+                _buildSwitchGridAndListButton(),
+              ],
+            ),
           ),
-        ));
+          Expanded(
+            child: LocalHero(
+              controller: _tabController,
+              pages: [
+                ListViewContent(
+                  equipments: _filteredEquipments,
+                  basePageContext: context,
+                  tabController: _tabController,
+                ),
+                GridViewContent(
+                  equipments: _filteredEquipments,
+                  basePageContext: context,
+                  tabController: _tabController,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

@@ -8,8 +8,12 @@ import 'base_card_view.dart';
 
 class ListViewContent extends StatefulWidget {
   const ListViewContent(
-      {super.key, required this.basePageContext, this.tabController});
+      {super.key,
+      required this.basePageContext,
+      this.tabController,
+      required this.equipments});
   final TabController? tabController;
+  final List<Equipment> equipments;
   final BuildContext basePageContext;
 
   @override
@@ -37,7 +41,7 @@ class _ListViewContentState extends State<ListViewContent> {
       controller: _scrollController,
       padding: EdgeInsets.zero,
       primary: false,
-      itemCount: equipments.length,
+      itemCount: widget.equipments.length,
       shrinkWrap: true,
       itemBuilder: (context, index) {
         return Padding(
@@ -47,7 +51,7 @@ class _ListViewContentState extends State<ListViewContent> {
             child: BaseCard(
                 viewType: CardViewType.list,
                 index: index,
-                equipmentData: equipments[index],
+                equipmentData: widget.equipments[index],
                 onPressedCard: (index) {
                   GoRouter.of(context).push(Routes.BOOKING_DATE);
                 }),

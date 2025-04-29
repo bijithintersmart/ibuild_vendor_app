@@ -41,6 +41,7 @@ class InputField extends StatelessWidget {
   final double borderWidth;
   final double? elevation;
   final BorderRadius? feildRadius;
+  final bool? autofocus;
   InputField({
     super.key,
     required this.labelText,
@@ -77,6 +78,7 @@ class InputField extends StatelessWidget {
     this.borderWidth = 1,
     this.elevation = 0,
     this.feildRadius,
+    this.autofocus,
     this.borderColor = Colors.transparent,
   });
 
@@ -113,15 +115,18 @@ class InputField extends StatelessWidget {
             child: NormalText(
               text: title,
               style: titleStyle ??
-                  Theme.of(context).textTheme.bodySmall!.copyWith(
-                        color: Colors.black,
-                        fontSize: 12,
-                      ),
+                  const TextStyle(
+                    color: Colors.black,
+                    fontSize: 12,
+                    fontFamily: 'Canaro',
+                    fontWeight: FontWeight.w600,
+                  ),
             ),
           ),
         TextFormField(
           initialValue: initialValue,
           validator: validator,
+          autofocus: autofocus ?? false,
           textAlignVertical: TextAlignVertical.center,
           textAlign: TextAlign.start,
           autovalidateMode: autovalidateMode,
