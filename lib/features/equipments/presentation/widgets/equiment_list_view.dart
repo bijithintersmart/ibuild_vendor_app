@@ -33,27 +33,30 @@ class _ListViewContentState extends State<ListViewContent> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      controller: _scrollController,
-      padding: EdgeInsets.zero,
-      primary: false,
-      itemCount: equipments.length,
-      shrinkWrap: true,
-      itemBuilder: (context, index) {
-        return Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: AspectRatio(
-            aspectRatio: 16 / 9,
-            child: BaseCard(
-                viewType: CardViewType.list,
-                index: index,
-                equipmentData: equipments[index],
-                onPressedCard: (index) {
-                  GoRouter.of(context).push(Routes.BOOKING_DATE);
-                }),
-          ),
-        );
-      },
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 20),
+      child: ListView.builder(
+        controller: _scrollController,
+        padding: EdgeInsets.zero,
+        primary: false,
+        itemCount: equipments.length,
+        shrinkWrap: true,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: AspectRatio(
+              aspectRatio: 16 / 9,
+              child: BaseCard(
+                  viewType: CardViewType.list,
+                  index: index,
+                  equipmentData: equipments[index],
+                  onPressedCard: (index) {
+                    GoRouter.of(context).push(Routes.BOOKING_DATE);
+                  }),
+            ),
+          );
+        },
+      ),
     );
   }
 }

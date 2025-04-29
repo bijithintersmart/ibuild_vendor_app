@@ -33,23 +33,26 @@ class _GridViewContentState extends State<GridViewContent> {
 
   @override
   Widget build(BuildContext context) {
-    return GridView.count(
-      controller: _scrollController,
-      shrinkWrap: true,
-      crossAxisCount: 2,
-      childAspectRatio: 16 / 21.5,
-      mainAxisSpacing: 10,
-      crossAxisSpacing: 10,
-      padding: const EdgeInsets.symmetric(horizontal: 25),
-      children: List.generate(
-        equipments.length,
-        (index) => BaseCard(
-          viewType: CardViewType.grid,
-          index: index,
-          equipmentData: equipments[index],
-          onPressedCard: (index) {
-            GoRouter.of(context).push(Routes.BOOKING_DATE);
-          },
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 30),
+      child: GridView.count(
+        controller: _scrollController,
+        shrinkWrap: true,
+        crossAxisCount: 2,
+        childAspectRatio: 16 / 21.5,
+        mainAxisSpacing: 10,
+        crossAxisSpacing: 10,
+        padding: const EdgeInsets.symmetric(horizontal: 25),
+        children: List.generate(
+          equipments.length,
+          (index) => BaseCard(
+            viewType: CardViewType.grid,
+            index: index,
+            equipmentData: equipments[index],
+            onPressedCard: (index) {
+              GoRouter.of(context).push(Routes.BOOKING_DATE);
+            },
+          ),
         ),
       ),
     );
