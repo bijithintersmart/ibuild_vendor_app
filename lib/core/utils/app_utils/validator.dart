@@ -60,10 +60,8 @@ class Validator {
     if (!debugValidation) return null;
     if (value == null || value.isEmpty) {
       return 'Password is required';
-    } else if (value.isValidPassword) {
-      return value.getPasswordErrorMessage!;
     }
-    return null;
+    return value.getPasswordErrorMessage;
   }
 
   static String? validateConfirmPassword(

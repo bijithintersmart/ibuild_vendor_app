@@ -66,7 +66,7 @@ class AppRouter {
   static final GoRouter router = GoRouter(
     observers: [routeObserver],
     navigatorKey: navigatorKey,
-    initialLocation: Routes.SKELETON,
+    initialLocation: Routes.SPLASH,
     errorBuilder: (context, state) => ErrorScreen(
       errorData: ErrorData(
         error: state.error,
