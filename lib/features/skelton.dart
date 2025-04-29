@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ibuild_vendor/core/theme/app_colors.dart';
+import 'package:ibuild_vendor/core/utils/app_utils/navbar_icons.dart';
 import 'package:ibuild_vendor/features/booking/presentation/pages/booking.dart';
 import 'package:ibuild_vendor/features/equipments/presentation/pages/equipments.dart';
 import 'package:ibuild_vendor/features/home/presentation/pages/home.dart';
@@ -32,13 +33,17 @@ class _SkeltonState extends State<Skelton> {
     PersistentTabConfig(
       screen: const HomeScreen(),
       item: ItemConfig(
-        icon: const Icon(Icons.home_outlined, size: iconSize),
+        icon: const Icon(
+          NavbarIcons.home_active,
+          // size: iconSize,
+        ),
         inactiveIcon: const Icon(
-          Icons.home_outlined,
-          size: iconSize,
+          NavbarIcons.home,
+          // size: iconSize,
           color: iconColor,
         ),
         title: "Home",
+        iconSize: 22,
         activeForegroundColor: AppColors.secondary,
         inactiveBackgroundColor: iconColor,
       ),
@@ -63,15 +68,16 @@ class _SkeltonState extends State<Skelton> {
         screen: const BookingScreen(),
         item: ItemConfig(
           icon: const Icon(
-            Icons.calendar_month,
-            size: iconSize,
+            NavbarIcons.booking_active,
+            // size: iconSize,
           ),
           inactiveIcon: const Icon(
-            Icons.calendar_month_outlined,
-            size: iconSize,
+            NavbarIcons.booking,
+            // size: iconSize,
             color: iconColor,
           ),
           title: "Bookings",
+          iconSize: 22,
           activeForegroundColor: AppColors.secondary,
           inactiveBackgroundColor: iconColor,
         )),
@@ -92,20 +98,21 @@ class _SkeltonState extends State<Skelton> {
         screen: const ProfileScreen(),
         item: ItemConfig(
           icon: const Icon(
-            Icons.person,
-            size: iconSize,
+            NavbarIcons.user,
+            // size: iconSize,
           ),
           inactiveIcon: const Icon(
-            Icons.person_outline,
-            size: iconSize,
+            NavbarIcons.user_outline,
+            // size: iconSize,
             color: iconColor,
           ),
           title: "Profile",
+          iconSize: 22,
           activeForegroundColor: AppColors.secondary,
           inactiveBackgroundColor: iconColor,
         )),
   ];
-  
+
   @override
   Widget build(BuildContext context) {
     return PersistentTabView(

@@ -123,6 +123,11 @@ flutter:
           weight: 500
         - asset: assets/fonts/inter/Inter-Bold.ttf
           weight: 700
+    
+    - family:  NavbarIcons
+      fonts:
+        - asset: assets/fonts/navbar/NavbarIcons.ttf
+
 
 flutter_native_splash:
   color: "#FFFFFF"
