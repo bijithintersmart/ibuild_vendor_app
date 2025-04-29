@@ -26,7 +26,7 @@ class AppLoaderWidget extends StatelessWidget {
                 size: size - 15,
               ),
               Lottie.asset(
-                'assets/lotties/charging_loader.json',
+                'assets/lotties/app_loader.json',
                 fit: BoxFit.cover,
                 width: size - 35,
               ),
@@ -46,7 +46,7 @@ class AppImageLoader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: LottieBuilder.asset(
-        'assets/lotties/charging_bounce.json',
+        'assets/lotties/app_loader.json',
       ),
     );
   }

@@ -5,6 +5,7 @@ import 'package:ibuild_vendor/core/router/go_route.dart';
 import 'package:ibuild_vendor/core/theme/app_colors.dart';
 import 'package:ibuild_vendor/core/utils/app_utils/app_logger.dart';
 import 'package:ibuild_vendor/core/utils/app_utils/error_handler.dart';
+import 'package:ibuild_vendor/core/utils/app_utils/navbar_icons.dart';
 import 'package:ibuild_vendor/core/utils/common_widgets.dart/normal_text.dart';
 import 'package:lottie/lottie.dart';
 
@@ -169,7 +170,7 @@ class ErrorScreen extends StatelessWidget {
                         onPressed: () {
                           context.pop();
                         },
-                        icon: const Icon(Icons.arrow_back),
+                        icon: const Icon(Icons.arrow_back_ios_new_rounded),
                         label: const NormalText(
                           text: 'Go Back',
                           color: Colors.black87,
@@ -192,7 +193,7 @@ class ErrorScreen extends StatelessWidget {
                         onPressed: () {
                           context.go(Routes.SKELETON);
                         },
-                        icon: const Icon(Icons.home),
+                        icon: const Icon(NavbarIcons.home_active),
                         label: const NormalText(
                           text: 'Go to Home',
                           color: Colors.white,
