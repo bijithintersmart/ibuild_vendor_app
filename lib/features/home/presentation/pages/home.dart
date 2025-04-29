@@ -55,13 +55,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   padding: const EdgeInsets.all(6),
                   elevation: 0,
                 ),
-                child: IconButton(
-                    onPressed: () {
+                  child: GestureDetector(
+                      onTap: () {
                       navController.jumpToTab(
                         3,
                       );
-                    },
-                    icon: const Icon(Icons.notifications_outlined)),
+                      },
+                      child: const Icon(Icons.notifications_outlined))
               ),
             ),
           ],
