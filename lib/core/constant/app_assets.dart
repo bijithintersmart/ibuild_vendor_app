@@ -13,6 +13,7 @@ class AppSvgs{
   static const String profileActive = 'assets/svgs/profile_active.svg';
   static const String profile = 'assets/svgs/profile.svg';
   static const String appLogoText = 'assets/svgs/logo_text.svg';
+  static const String orderWaiting = 'assets/svgs/order_waiting.svg';
 }
 class AppImages{
   AppImages._();

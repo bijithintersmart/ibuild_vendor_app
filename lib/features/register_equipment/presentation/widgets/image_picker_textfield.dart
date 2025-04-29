@@ -81,7 +81,7 @@ class _PhotoUploaderState extends State<PhotoUploader> {
                                 horizontal: 8, vertical: 4),
                             margin: const EdgeInsets.only(right: 10),
                             decoration: BoxDecoration(
-                              color: AppColors.greyLight,
+                              color: AppColors.secondary.withOpacity(.25),
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: Row(

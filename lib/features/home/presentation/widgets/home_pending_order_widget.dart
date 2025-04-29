@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ibuild_vendor/core/constant/app_assets.dart';
 import 'package:ibuild_vendor/core/theme/app_colors.dart';
 import 'package:ibuild_vendor/core/utils/app_utils/functions.dart';
 import 'package:ibuild_vendor/core/utils/common_widgets.dart/normal_text.dart';
@@ -32,7 +34,7 @@ class _HomePendingOrderWidgetState extends State<HomePendingOrderWidget> {
             itemCount: 3,
             itemBuilder: (_, i) {
               return ListTile(
-                tileColor: Colors.grey.withOpacity(.1),
+                tileColor: Colors.white30,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                     side: BorderSide(
@@ -40,13 +42,15 @@ class _HomePendingOrderWidgetState extends State<HomePendingOrderWidget> {
                     )),
                 enableFeedback: true,
                 leading: Container(
+                  width: 45,
+                  height: 45,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: AppColors.cardGrey,
+                    color: AppColors.secondary.withOpacity(.1),
                   ),
                   padding: const EdgeInsets.all(10),
-                  child: Icon(
-                    Icons.hourglass_bottom_rounded,
+                  child: SvgPicture.asset(
+                    AppSvgs.orderWaiting,
                     color: AppColors.secondary,
                   ),
                 ),

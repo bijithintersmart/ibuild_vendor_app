@@ -5,7 +5,7 @@ import 'package:ibuild_vendor/features/equipments/data/models/equipment_model.da
 
 import '../pages/equipments.dart';
 
-class BaseCard extends StatelessWidget {
+class BaseCard extends StatefulWidget {
   const BaseCard({
     super.key,
     required this.index,
@@ -20,14 +20,26 @@ class BaseCard extends StatelessWidget {
   final Equipment equipmentData;
 
   @override
+  State<BaseCard> createState() => _BaseCardState();
+}
+
+class _BaseCardState extends State<BaseCard> {
+  bool isEquipmentAvailable = true;
+  @override
   Widget build(BuildContext context) {
     return Hero(
-      tag: index,
+      tag: widget.index,
       child: AnimatedEquipmentCard(
-        equipment: equipmentData,
-        index: index,
-        viewType: viewType,
-        onTap: () => onPressedCard(index),
+        equipment: widget.equipmentData,
+        index: widget.index,
+        viewType: widget.viewType,
+        avilalblity: isEquipmentAvailable,
+        onAvilalblityChange: (value) {
+          setState(() {
+            isEquipmentAvailable = value;
+          });
+        },
+        onTap: () => widget.onPressedCard(widget.index),
       ),
     );
   }

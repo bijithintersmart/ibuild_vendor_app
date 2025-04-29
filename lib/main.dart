@@ -44,7 +44,7 @@ class _MyAppState extends State<MyApp> {
     return BlocProvider.value(
       value: AppRouter.networkCubit,
       child: MaterialApp.router(
-        title: '',
+        title: 'IBUILD Vendor app',
         debugShowCheckedModeBanner: false,
         themeMode: ThemeMode.light,
         routerConfig: AppRouter.router,

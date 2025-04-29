@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
@@ -75,25 +74,27 @@ class AppRouter {
       ),
     ),
     redirect: (context, state) async {
-      // if (kReleaseMode) {
-      //   final auth = await _authStatus();
-      //   final isPublicRoute = {
-      //     Routes.SPLASH,
-      //     Routes.ONBOARDING,
-      //     Routes.LOGIN,
-      //     Routes.REGISTER,
-      //     Routes.FORGOT,
-      //     Routes.RESET_PASSWORD,
-      //     Routes.RESET_SUCCESS,
-      //     Routes.VERIFY_OTP,
-      //     Routes.NOT_INTERNET,
-      //     Routes.API_TIMEOUT_ERROR,
-      //     Routes.ERROR,
-      //     Routes.PRIVACY,
-      //     Routes.TERMS,
-      //   }.contains(state.matchedLocation);
-      //   if (!auth && !isPublicRoute) return Routes.LOGIN;
-      // }
+      /*
+      if (kReleaseMode) {
+        final auth = await _authStatus();
+        final isPublicRoute = {
+          Routes.SPLASH,
+          Routes.ONBOARDING,
+          Routes.LOGIN,
+          Routes.REGISTER,
+          Routes.FORGOT,
+          Routes.RESET_PASSWORD,
+          Routes.RESET_SUCCESS,
+          Routes.VERIFY_OTP,
+          Routes.NOT_INTERNET,
+          Routes.API_TIMEOUT_ERROR,
+          Routes.ERROR,
+          Routes.PRIVACY,
+          Routes.TERMS,
+        }.contains(state.matchedLocation);
+        if (!auth && !isPublicRoute) return Routes.LOGIN;
+      }
+      */
       return null;
     },
     routes: [

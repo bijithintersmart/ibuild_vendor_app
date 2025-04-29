@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:animate_equipment_view/src/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -10,16 +11,20 @@ class AnimatedEquipmentCard extends StatelessWidget {
     required this.index,
     required this.viewType,
     required this.onTap,
+    this.onAvilalblityChange,
+    this.avilalblity = false,
   });
 
   final dynamic equipment;
   final int index;
   final CardViewType viewType;
   final VoidCallback onTap;
+  final Function(bool)? onAvilalblityChange;
+  final bool? avilalblity;
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return GestureDetector(
       onTap: onTap,
       child: Builder(
         builder: (context) {
@@ -34,9 +39,7 @@ class AnimatedEquipmentCard extends StatelessWidget {
   }
 
   Widget _buildListViewCard(BuildContext context) {
-    return AnimatedContainer(
-      duration: Duration(milliseconds: 300),
-      curve: Curves.easeIn,
+    return Container(
       margin: const EdgeInsets.only(bottom: 16),
       decoration: BoxDecoration(
         color: AppColors.cardGrey,
@@ -48,7 +51,7 @@ class AnimatedEquipmentCard extends StatelessWidget {
             child: _buildImage(
               context,
               viewType: viewType,
-              height: 120,
+              height: 160,
               borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(12),
                 topRight: Radius.circular(12),
@@ -62,6 +65,10 @@ class AnimatedEquipmentCard extends StatelessWidget {
               children: [_buildTitle(), _buildPrice()],
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: _buildAvilablityWidget(context),
+          ),
         ],
       ),
     );
@@ -73,10 +80,9 @@ class AnimatedEquipmentCard extends StatelessWidget {
       children: [
         Align(
           alignment: Alignment.bottomCenter,
-          child: AnimatedContainer(
-            duration: Duration(milliseconds: 300),
-            curve: Curves.easeIn,
-            height: 150,
+          child: Container(
+            height: 225,
+            width: double.maxFinite,
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
             decoration: BoxDecoration(
               color: AppColors.cardGrey,
@@ -91,7 +97,7 @@ class AnimatedEquipmentCard extends StatelessWidget {
                 children: [
                   Text(
                     "${equipment.name}",
-                    maxLines: 1,
+                    maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context).textTheme.bodySmall!.copyWith(
                       fontWeight: FontWeight.w600,
@@ -132,18 +138,17 @@ class AnimatedEquipmentCard extends StatelessWidget {
                       ],
                     ),
                   ),
+                  _buildAvilablityWidget(context),
                 ],
               ),
             ),
           ),
         ),
         Positioned(
-          top: 25,
+          top: 5,
           left: -7,
           right: -7,
-          child: AnimatedContainer(
-            duration: Duration(milliseconds: 300),
-            curve: Curves.easeIn,
+          child: Container(
             clipBehavior: Clip.antiAlias,
             height: 140,
             margin: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
@@ -164,6 +169,117 @@ class AnimatedEquipmentCard extends StatelessWidget {
     );
   }
 
+  Widget _buildAvilablityWidget(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 10),
+      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child:
+          viewType == CardViewType.list
+              ? Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Availability",
+                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  SizedBox(width: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "No",
+                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                      SizedBox(
+                        height: 35,
+                        child: FittedBox(
+                          fit: BoxFit.contain,
+                          child: Switch.adaptive(
+                            inactiveThumbColor: Colors.grey,
+                            trackOutlineColor: WidgetStatePropertyAll(
+                              AppColors.grey,
+                            ),
+                            inactiveTrackColor: AppColors.cardGrey,
+                            activeTrackColor: AppColors.cardGrey,
+                            activeColor: AppColors.secondary,
+                            value: avilalblity ?? false,
+                            onChanged: onAvilalblityChange,
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                      Text(
+                        "Yes",
+                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              )
+              : Padding(
+                padding: const EdgeInsets.symmetric(vertical: 5),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Availability",
+                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    SizedBox(height: 6),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "No",
+                          style: Theme.of(context).textTheme.bodySmall!
+                              .copyWith(fontWeight: FontWeight.w500),
+                        ),
+                        SizedBox(width: 10),
+                        SizedBox(
+                          height: 35,
+                          child: FittedBox(
+                            fit: BoxFit.contain,
+                            child: Switch.adaptive(
+                              inactiveThumbColor: Colors.grey,
+                              trackOutlineColor: WidgetStatePropertyAll(
+                                AppColors.grey,
+                              ),
+                              inactiveTrackColor: AppColors.cardGrey,
+                              activeTrackColor: AppColors.cardGrey,
+                              activeColor: AppColors.secondary,
+                              value: avilalblity ?? false,
+                              onChanged: onAvilalblityChange,
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        Text(
+                          "Yes",
+                          style: Theme.of(context).textTheme.bodySmall!
+                              .copyWith(fontWeight: FontWeight.w500),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+    );
+  }
+
   Widget _buildImage(
     BuildContext context, {
     required double height,
@@ -171,9 +287,7 @@ class AnimatedEquipmentCard extends StatelessWidget {
     BoxFit fit = BoxFit.cover,
     required BorderRadius borderRadius,
   }) {
-    return AnimatedContainer(
-      duration: Duration(milliseconds: 300),
-      curve: Curves.easeIn,
+    return Container(
       height: height,
       width: viewType == CardViewType.grid ? 90 : null,
       decoration: BoxDecoration(
@@ -182,7 +296,7 @@ class AnimatedEquipmentCard extends StatelessWidget {
         image: DecorationImage(image: AssetImage(equipment.imageUrl), fit: fit),
       ),
       child:
-          !equipment.isAvailable
+          !(avilalblity ?? false)
               ? Container(
                 decoration: BoxDecoration(
                   color: AppColors.greyLight.withOpacity(.3),

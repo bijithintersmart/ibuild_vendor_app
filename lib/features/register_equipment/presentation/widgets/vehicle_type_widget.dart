@@ -42,6 +42,13 @@ class _CategoryDropdownState extends State<CategoryDropdown> {
           ),
           child: DropdownButtonFormField<String>(
             isExpanded: true,
+            hint: Text(
+              "Choose a category",
+              style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                    color: AppColors.grey,
+                    fontSize: 12,
+                  ),
+            ),
             decoration: const InputDecoration(
               hintText: 'Choose a category',
               border: InputBorder.none,
@@ -116,7 +123,6 @@ class _CategoryDropdownState extends State<CategoryDropdown> {
                 value: subcategory,
                 child: Row(
                   children: [
-                    
                     const Icon(Icons.subdirectory_arrow_right),
                     const SizedBox(width: 8),
                     Expanded(

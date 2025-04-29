@@ -1,6 +1,9 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart' hide Badge;
 import 'package:flutter_svg/svg.dart';
 import 'package:ibuild_vendor/core/constant/app_assets.dart';
+import 'package:ibuild_vendor/core/router/go_route.dart';
 import 'package:ibuild_vendor/core/theme/app_colors.dart';
 import '../widgets/widgets.dart';
 import 'package:badges/badges.dart' as badges;
@@ -15,6 +18,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
+    final notificationCount = Random().nextInt(5);
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60),
@@ -35,11 +39,11 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               child: badges.Badge(
                 position: badges.BadgePosition.topEnd(top: -15, end: -10),
-                showBadge: true,
+                showBadge: notificationCount > 0,
                 ignorePointer: true,
                 onTap: () {},
                 badgeContent: Text(
-                  "3",
+                  "${notificationCount}",
                   style: Theme.of(context)
                       .textTheme
                       .bodySmall!
@@ -51,7 +55,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   padding: const EdgeInsets.all(6),
                   elevation: 0,
                 ),
-                child: const Icon(Icons.notifications_outlined),
+                child: IconButton(
+                    onPressed: () {
+                      navController.jumpToTab(
+                        3,
+                      );
+                    },
+                    icon: const Icon(Icons.notifications_outlined)),
               ),
             ),
           ],
@@ -62,8 +72,11 @@ class _HomeScreenState extends State<HomeScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             OrderStatusScreen(),
+            SizedBox(height: 15),
             HomeUpcommingWidget(),
+            SizedBox(height: 15),
             HomePendingOrderWidget(),
+            SizedBox(height: 15),
             CompletedOrdersWidget(),
             SizedBox(
               height: kBottomNavigationBarHeight,
