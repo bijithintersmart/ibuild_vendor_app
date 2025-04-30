@@ -1,5 +1,6 @@
 import 'package:animate_equipment_view/animate_equipment_view.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ibuild_vendor/core/router/go_route.dart';
 import 'package:ibuild_vendor/core/theme/app_colors.dart';
 import 'package:ibuild_vendor/core/utils/common_widgets.dart/input_field_widget.dart';
@@ -110,6 +111,32 @@ class _EquipmentScreenState extends State<EquipmentScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 5),
+        child: ElevatedButton.icon(
+            onPressed: () {
+              GoRouter.of(context).push(Routes.ADD_EQUIPMENT);
+            },
+            style: ElevatedButton.styleFrom(
+              minimumSize: const Size(150, 40),
+              backgroundColor: AppColors.secondary,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5),
+              ),
+            ),
+            icon: const Icon(
+              Icons.handyman,
+              color: Colors.white,
+            ),
+            label: Text(
+              'Add New Equipment',
+              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+            )),
+      ),
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded),

@@ -97,7 +97,7 @@ class AnimatedEquipmentCard extends StatelessWidget {
                 children: [
                   Text(
                     "${equipment.name}",
-                    maxLines: 2,
+                    maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context).textTheme.bodySmall!.copyWith(
                       fontWeight: FontWeight.w600,
@@ -170,8 +170,10 @@ class AnimatedEquipmentCard extends StatelessWidget {
   }
 
   Widget _buildAvilablityWidget(BuildContext context) {
-    return Container(
+    return AnimatedContainer(
+      duration: Duration(milliseconds: 300),
       margin: EdgeInsets.symmetric(vertical: 10),
+      width: double.infinity,
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -179,8 +181,10 @@ class AnimatedEquipmentCard extends StatelessWidget {
       ),
       child:
           viewType == CardViewType.list
-              ? Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              ? Wrap(
+                crossAxisAlignment: WrapCrossAlignment.center,
+                alignment: WrapAlignment.spaceBetween,
+                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     "Availability",
@@ -190,6 +194,7 @@ class AnimatedEquipmentCard extends StatelessWidget {
                   ),
                   SizedBox(width: 10),
                   Row(
+                    mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(

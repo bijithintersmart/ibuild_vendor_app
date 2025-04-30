@@ -27,8 +27,13 @@ class _GridViewContentState extends State<GridViewContent> {
     _scrollController = ScrollController();
     widget.tabController?.addListener(() {
       if (widget.tabController?.indexIsChanging ?? false) {
-        _scrollController.animateTo(0,
-            duration: const Duration(milliseconds: 500), curve: Curves.easeIn);
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (_scrollController.hasClients) {
+            _scrollController.animateTo(0,
+                duration: const Duration(milliseconds: 500),
+                curve: Curves.easeIn);
+          }
+        });
       }
     });
     super.initState();
@@ -40,7 +45,7 @@ class _GridViewContentState extends State<GridViewContent> {
       controller: _scrollController,
       shrinkWrap: true,
       crossAxisCount: 2,
-      childAspectRatio: 16 / 19.5,
+      childAspectRatio: 16 / 25.5,
       mainAxisSpacing: 10,
       crossAxisSpacing: 10,
       padding: const EdgeInsets.symmetric(horizontal: 25),

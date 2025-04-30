@@ -28,8 +28,13 @@ class _ListViewContentState extends State<ListViewContent> {
     _scrollController = ScrollController();
     widget.tabController?.addListener(() {
       if (widget.tabController?.indexIsChanging ?? false) {
-        _scrollController.animateTo(0,
-            duration: const Duration(milliseconds: 500), curve: Curves.easeIn);
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (_scrollController.hasClients) {
+            _scrollController.animateTo(0,
+                duration: const Duration(milliseconds: 500),
+                curve: Curves.easeIn);
+          }
+        });
       }
     });
     super.initState();

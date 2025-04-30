@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ibuild_vendor/core/router/go_route.dart';
 import 'package:ibuild_vendor/core/theme/app_colors.dart';
 import 'package:ibuild_vendor/core/utils/common_widgets.dart/input_field_widget.dart';
 import 'package:ibuild_vendor/core/utils/common_widgets.dart/normal_text.dart';
@@ -207,7 +208,11 @@ class _AddEquipmentScreenState extends State<AddEquipmentScreen> {
         child: ElevatedButton(
             style: ElevatedButton.styleFrom(
                 minimumSize: const Size(double.infinity, 40)),
-            onPressed: () {},
+            onPressed: () {
+              GoRouter.of(context).push(
+                Routes.SKELETON,
+              );
+            },
             child: Text(
               "Submit",
               style: Theme.of(context)

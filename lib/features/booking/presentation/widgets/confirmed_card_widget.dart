@@ -107,26 +107,26 @@ class ConfirmedCardWidget extends StatelessWidget {
                   ),
                   Row(
                     children: [
-                      Expanded(
-                        flex: 1,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: AppColors.grey,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5)),
-                              minimumSize: const Size(200, 35)),
-                          onPressed: () {},
-                          child: NormalText(
-                              text: "Cancel",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium!
-                                  .copyWith(color: AppColors.primary)),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
+                      // Expanded(
+                      //   flex: 1,
+                      //   child: ElevatedButton(
+                      //     style: ElevatedButton.styleFrom(
+                      //         backgroundColor: AppColors.grey,
+                      //         shape: RoundedRectangleBorder(
+                      //             borderRadius: BorderRadius.circular(5)),
+                      //         minimumSize: const Size(200, 35)),
+                      //     onPressed: () {},
+                      //     child: NormalText(
+                      //         text: "Cancel",
+                      //         style: Theme.of(context)
+                      //             .textTheme
+                      //             .bodyMedium!
+                      //             .copyWith(color: AppColors.primary)),
+                      //   ),
+                      // ),
+                      // const SizedBox(
+                      //   width: 10,
+                      // ),
                       Expanded(
                         flex: 2,
                         child: ElevatedButton(
