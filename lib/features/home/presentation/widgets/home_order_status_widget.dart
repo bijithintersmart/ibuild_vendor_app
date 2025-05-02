@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ibuild_vendor/core/router/go_route.dart';
 import 'dart:ui';
 
 import 'package:ibuild_vendor/core/theme/app_colors.dart';
@@ -17,23 +18,59 @@ class OrderStatusScreen extends StatelessWidget {
         crossAxisSpacing: 16.0,
         childAspectRatio: 1.3,
         children: [
-          StatusCard(
-            title: "Pending",
-            count: "15",
-            subtitle: "Total pending orders",
-            color: AppColors.secondary,
+          GestureDetector(
+            onTap: () {
+              navController.jumpToTab(2);
+              if (tabController != null) {
+                tabController?.animateTo(
+                  0,
+                  duration: const Duration(milliseconds: 400),
+                  curve: Curves.easeIn,
+                );
+              }
+            },
+            child: StatusCard(
+              title: "Pending",
+              count: "15",
+              subtitle: "Total pending orders",
+              color: AppColors.secondary,
+            ),
           ),
-          StatusCard(
-            title: "Confirmed",
-            count: "70",
-            subtitle: "Total confirmed orders",
-            color: AppColors.secondary,
+          GestureDetector(
+            onTap: () {
+              navController.jumpToTab(2);
+              if (tabController != null) {
+                tabController?.animateTo(
+                  1,
+                  duration: const Duration(milliseconds: 400),
+                  curve: Curves.easeIn,
+                );
+              }
+            },
+            child: StatusCard(
+              title: "Confirmed",
+              count: "70",
+              subtitle: "Total confirmed orders",
+              color: AppColors.secondary,
+            ),
           ),
-          StatusCard(
-            title: "Payment Complete",
-            count: "20",
-            subtitle: "Total inline orders",
-            color: AppColors.secondary,
+          GestureDetector(
+            onTap: () {
+              navController.jumpToTab(2);
+              if (tabController != null) {
+                tabController?.animateTo(
+                  2,
+                  duration: const Duration(milliseconds: 400),
+                  curve: Curves.easeIn,
+                );
+              }
+            },
+            child: StatusCard(
+              title: "Payment Complete",
+              count: "20",
+              subtitle: "Total inline orders",
+              color: AppColors.secondary,
+            ),
           ),
           StatusCard(
             title: "Service Completed",
