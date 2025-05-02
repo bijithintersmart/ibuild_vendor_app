@@ -59,7 +59,7 @@ class OrderStatusScreen extends StatelessWidget {
               navController.jumpToTab(2);
               if (tabController != null) {
                 tabController?.animateTo(
-                  2,
+                  1,
                   duration: const Duration(milliseconds: 400),
                   curve: Curves.easeIn,
                 );
@@ -72,11 +72,23 @@ class OrderStatusScreen extends StatelessWidget {
               color: AppColors.secondary,
             ),
           ),
-          StatusCard(
-            title: "Service Completed",
-            count: "100",
-            subtitle: "Total completed orders",
-            color: AppColors.secondary,
+          GestureDetector(
+            onTap: () {
+              navController.jumpToTab(2);
+              if (tabController != null) {
+                tabController?.animateTo(
+                  2,
+                  duration: const Duration(milliseconds: 400),
+                  curve: Curves.easeIn,
+                );
+              }
+            },
+            child: StatusCard(
+              title: "Service Completed",
+              count: "100",
+              subtitle: "Total completed orders",
+              color: AppColors.secondary,
+            ),
           ),
         ],
       ),

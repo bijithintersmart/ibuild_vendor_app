@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ibuild_vendor/core/theme/app_colors.dart';
-import 'package:ibuild_vendor/core/utils/app_utils/extension.dart';
-import 'package:ibuild_vendor/core/utils/common_widgets.dart/normal_text.dart';
 import 'package:ibuild_vendor/core/utils/common_widgets.dart/scrollable_tab_view.dart';
 import 'package:ibuild_vendor/features/details/data/models/gallery_model.dart';
 import 'package:ibuild_vendor/features/details/presentation/widgets/description_widget.dart';
@@ -103,26 +101,6 @@ class _EquipmentDetailsPageState extends State<EquipmentDetailsPage>
                       ),
                     ],
                   ),
-                  ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: Size(context.screenWidth * .35, 30),
-                      backgroundColor: Colors.orange[300],
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5)),
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                      ),
-                    ),
-                    child: NormalText(
-                      text: 'BOOK EQUIPMENT',
-                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                    ),
-                  ),
                 ],
               ),
             ),
@@ -137,6 +115,7 @@ class _EquipmentDetailsPageState extends State<EquipmentDetailsPage>
                 tabAlignment: TabAlignment.start,
                 labelColor: Colors.black,
                 isScrollable: true,
+                padding: EdgeInsets.zero,
                 splashFactory: NoSplash.splashFactory,
                 unselectedLabelColor: Colors.grey,
                 indicatorColor: Colors.transparent,

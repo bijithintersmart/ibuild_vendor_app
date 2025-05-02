@@ -26,10 +26,10 @@ class BookingCalendarService {
       ..add(base.add(const Duration(days: 1)))
       ..add(base.add(const Duration(days: 2)))
       ..add(base.add(const Duration(days: 3)));
-    highlightedDates
-      ..add(base.add(const Duration(days: 6)))
-      ..add(base.add(const Duration(days: 7)))
-      ..add(base.add(const Duration(days: 8)));
+    // highlightedDates
+    //   ..add(base.add(const Duration(days: 6)))
+    //   ..add(base.add(const Duration(days: 7)))
+    //   ..add(base.add(const Duration(days: 8)));
   }
 
   static DateTime _clampDate(DateTime date) {
