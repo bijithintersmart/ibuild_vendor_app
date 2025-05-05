@@ -21,13 +21,7 @@ class OrderStatusScreen extends StatelessWidget {
           GestureDetector(
             onTap: () {
               navController.jumpToTab(2);
-              if (tabController != null) {
-                tabController?.animateTo(
-                  0,
-                  duration: const Duration(milliseconds: 400),
-                  curve: Curves.easeIn,
-                );
-              }
+              bookingTabNotifier = 0;
             },
             child: StatusCard(
               title: "Pending",
@@ -39,13 +33,7 @@ class OrderStatusScreen extends StatelessWidget {
           GestureDetector(
             onTap: () {
               navController.jumpToTab(2);
-              if (tabController != null) {
-                tabController?.animateTo(
-                  1,
-                  duration: const Duration(milliseconds: 400),
-                  curve: Curves.easeIn,
-                );
-              }
+              bookingTabNotifier = 1;
             },
             child: StatusCard(
               title: "Confirmed",
@@ -57,13 +45,7 @@ class OrderStatusScreen extends StatelessWidget {
           GestureDetector(
             onTap: () {
               navController.jumpToTab(2);
-              if (tabController != null) {
-                tabController?.animateTo(
-                  1,
-                  duration: const Duration(milliseconds: 400),
-                  curve: Curves.easeIn,
-                );
-              }
+              bookingTabNotifier = 1;
             },
             child: StatusCard(
               title: "Payment Complete",
@@ -75,13 +57,7 @@ class OrderStatusScreen extends StatelessWidget {
           GestureDetector(
             onTap: () {
               navController.jumpToTab(2);
-              if (tabController != null) {
-                tabController?.animateTo(
-                  2,
-                  duration: const Duration(milliseconds: 400),
-                  curve: Curves.easeIn,
-                );
-              }
+              bookingTabNotifier = 2;
             },
             child: StatusCard(
               title: "Service Completed",

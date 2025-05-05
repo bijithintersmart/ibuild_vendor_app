@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:ibuild_vendor/core/router/go_route.dart';
+import 'package:ibuild_vendor/core/utils/app_utils/functions.dart';
+import 'package:ibuild_vendor/features/equipments/data/models/subcategory_model.dart';
+import 'package:ibuild_vendor/features/equipments/presentation/pages/equipments.dart';
+import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 
 class BookingOptionWidget extends StatefulWidget {
-  const BookingOptionWidget({super.key});
+  final List<SubcategoryModel> equipments;
+  const BookingOptionWidget({super.key, required this.equipments});
 
   @override
   State<BookingOptionWidget> createState() => _BookingOptionWidgetState();
@@ -13,7 +16,6 @@ class _BookingOptionWidgetState extends State<BookingOptionWidget>
     with TickerProviderStateMixin {
   bool _isHalfDay = true;
   List<String> _selectedTimeSlots = [];
-  bool _allowMultipleSlots = false; // Toggle to allow multiple slot selection
 
   // Animation controllers
   late AnimationController _halfDayAnimController;
@@ -38,7 +40,6 @@ class _BookingOptionWidgetState extends State<BookingOptionWidget>
   // Method to toggle allowing multiple time slots
   void setAllowMultipleSlots(bool allow) {
     setState(() {
-      _allowMultipleSlots = allow;
       if (!allow && _selectedTimeSlots.length > 1) {
         // If switching to single selection, keep only the first selected slot
         _selectedTimeSlots = [_selectedTimeSlots.first];
@@ -52,7 +53,26 @@ class _BookingOptionWidgetState extends State<BookingOptionWidget>
     '06 PM to 10 PM',
     '10 PM to 02 AM'
   ];
-  Widget _buildTimeSlots() {
+
+  final List<String> _fullDayTimeSlots = [
+    '09 AM to 01 PM',
+    '02 PM to 06 PM',
+  ];
+  
+  void addButtonPress() {
+    if (_selectedTimeSlots.isNotEmpty) {
+      pushWithNavBar(
+          context,
+          MaterialPageRoute(
+              builder: (context) => EquipmentScreen(
+                    equipments: widget.equipments,
+                  )));
+    } else {
+      scaffoldToast("Please select a slot");
+    }
+  }
+
+  Widget _buildTimeSlots(List<String> timeSlots, bool allowMultipleSlots) {
     return ListView.separated(
       separatorBuilder: (context, index) => const SizedBox(
         height: 10,
@@ -65,15 +85,15 @@ class _BookingOptionWidgetState extends State<BookingOptionWidget>
       //   crossAxisSpacing: 12,
       //   mainAxisSpacing: 12,
       // ),
-      itemCount: _halfDayTimeSlots.length,
+      itemCount: timeSlots.length,
       itemBuilder: (context, index) {
-        final timeSlot = _halfDayTimeSlots[index];
+        final timeSlot = timeSlots[index];
         final isSelected = _selectedTimeSlots.contains(timeSlot);
 
         return GestureDetector(
             onTap: () {
               setState(() {
-                if (_allowMultipleSlots) {
+                if (allowMultipleSlots) {
                   // Toggle selection
                   if (isSelected) {
                     _selectedTimeSlots.remove(timeSlot);
@@ -84,20 +104,35 @@ class _BookingOptionWidgetState extends State<BookingOptionWidget>
                   // Single selection mode
                   _selectedTimeSlots = [timeSlot];
                 }
-                _isHalfDay = true;
-                if (_isHalfDay == false) {
-                  _fullDayAnimController.reverse();
-                  _halfDayAnimController.forward();
-                  _isHalfDay = true;
-                }
+                // if (allowMultipleSlots) {
+                //   _isHalfDay = true;
+                //   if (_isHalfDay == false) {
+                //     _fullDayAnimController.reverse();
+                //     _halfDayAnimController.forward();
+                //     _isHalfDay = true;
+                //   }
+                // }
               });
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
-                  "Time Slot",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+                Row(
+                  children: [
+                    const Text(
+                      "Time Slot",
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+                    ),
+                    const SizedBox(width: 10),
+                    Text(
+                      "${widget.equipments.length} Available",
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey,
+                      ),
+                    )
+                  ],
                 ),
                 Container(
                   padding: const EdgeInsets.symmetric(
@@ -150,6 +185,7 @@ class _BookingOptionWidgetState extends State<BookingOptionWidget>
                   setState(() {
                     if (!_isHalfDay) {
                       _isHalfDay = true;
+                      _selectedTimeSlots.clear();
                       _halfDayAnimController.forward();
                       _fullDayAnimController.reverse();
                     }
@@ -192,7 +228,7 @@ class _BookingOptionWidgetState extends State<BookingOptionWidget>
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _buildTimeSlots(),
+                      _buildTimeSlots(_halfDayTimeSlots, true),
                       const SizedBox(height: 16),
                       const Text(
                         'Lorem ipsum is simply dummy text of the printing and typesetting industry.',
@@ -202,9 +238,7 @@ class _BookingOptionWidgetState extends State<BookingOptionWidget>
                       Align(
                         alignment: Alignment.centerRight,
                         child: ElevatedButton(
-                          onPressed: () {
-                            GoRouter.of(context).push(Routes.DETAILS);
-                          },
+                          onPressed: addButtonPress,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.orange,
                             minimumSize: const Size(150, 48),
@@ -248,6 +282,7 @@ class _BookingOptionWidgetState extends State<BookingOptionWidget>
                   setState(() {
                     if (_isHalfDay) {
                       _isHalfDay = false;
+                      _selectedTimeSlots.clear();
                       _fullDayAnimController.forward();
                       _halfDayAnimController.reverse();
                     }
@@ -290,7 +325,7 @@ class _BookingOptionWidgetState extends State<BookingOptionWidget>
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _buildTimeSlots(),
+                      _buildTimeSlots(_fullDayTimeSlots, false),
                       const SizedBox(height: 16),
                       const Text(
                         'Full day booking gives you access from 9 AM to 10 PM.',
@@ -300,7 +335,7 @@ class _BookingOptionWidgetState extends State<BookingOptionWidget>
                       Align(
                         alignment: Alignment.centerRight,
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: addButtonPress,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.orange,
                             minimumSize: const Size(150, 48),

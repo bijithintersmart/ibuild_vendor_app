@@ -1,32 +1,31 @@
 import 'package:animate_equipment_view/animate_equipment_view.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:ibuild_vendor/core/router/go_route.dart';
 import 'package:ibuild_vendor/core/theme/app_colors.dart';
 import 'package:ibuild_vendor/core/utils/common_widgets.dart/input_field_widget.dart';
-import 'package:ibuild_vendor/features/equipments/data/models/equipment_model.dart';
-import 'package:ibuild_vendor/features/equipments/presentation/widgets/equiment_list_view.dart';
+import 'package:ibuild_vendor/features/equipments/data/models/subcategory_model.dart';
+import 'package:ibuild_vendor/features/features.dart';
+import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 
-import '../widgets/equiment_grid_view.dart';
 
 typedef OnPressedCard = Function(int index);
 
 class EquipmentScreen extends StatefulWidget {
-  const EquipmentScreen({super.key});
+  final List<SubcategoryModel> equipments;
+  const EquipmentScreen({super.key, required this.equipments});
 
   @override
   State<EquipmentScreen> createState() => _EquipmentScreenState();
 }
 
 class _EquipmentScreenState extends State<EquipmentScreen>
-    with TickerProviderStateMixin {
+    with SingleTickerProviderStateMixin {
   final TextEditingController _searchController = TextEditingController();
   late TabController _tabController;
   late ValueNotifier<CardViewType> _switchNotifier;
 
   bool _isSearching = false;
-  List<Equipment> _filteredEquipments = [];
-  List<Equipment> _allEquipments = equipments; // Your original list
+  List<SubcategoryModel> _filteredEquipments = [];
   @override
   void dispose() {
     _tabController.dispose();
@@ -37,7 +36,7 @@ class _EquipmentScreenState extends State<EquipmentScreen>
   @override
   void initState() {
     super.initState();
-    _filteredEquipments = _allEquipments;
+    _filteredEquipments = widget.equipments;
     _switchNotifier = ValueNotifier(CardViewType.grid);
     _tabController = TabController(length: 2, vsync: this);
   }
@@ -52,7 +51,7 @@ class _EquipmentScreenState extends State<EquipmentScreen>
     setState(() {
       _isSearching = false;
       _searchController.clear();
-      _filteredEquipments = _allEquipments;
+      _filteredEquipments = widget.equipments;
     });
   }
 
@@ -101,7 +100,7 @@ class _EquipmentScreenState extends State<EquipmentScreen>
 
   void _onSearchChanged(String query) {
     setState(() {
-      _filteredEquipments = _allEquipments
+      _filteredEquipments = widget.equipments
           .where(
               (item) => item.name.toLowerCase().contains(query.toLowerCase()))
           .toList();
@@ -116,7 +115,14 @@ class _EquipmentScreenState extends State<EquipmentScreen>
         padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 5),
         child: ElevatedButton.icon(
             onPressed: () {
-              GoRouter.of(context).push(Routes.ADD_EQUIPMENT);
+              pushWithNavBar(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => AddEquipmentScreen(
+                            onSubmit: () {
+                              Navigator.pop(context);
+                            },
+                          )));
             },
             style: ElevatedButton.styleFrom(
               minimumSize: const Size(150, 40),

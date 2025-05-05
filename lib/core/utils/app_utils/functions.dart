@@ -55,7 +55,7 @@ Future<bool?> showToast(
   );
 }
 
-int getRandomInteger({int max = 999}) {
+int getRandomInteger(int i, {int max = 999}) {
   return Random().nextInt(max);
 }
 

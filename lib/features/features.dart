@@ -24,7 +24,6 @@ export 'details/presentation/widgets/gallery_grid.dart';
 export 'details/presentation/widgets/gallery_item.dart';
 export 'details/presentation/widgets/month_picker_dialog.dart';
 export 'details/presentation/widgets/tab_item_widget.dart';
-export 'equipments/data/models/equipment_model.dart';
 export 'equipments/presentation/pages/equipments.dart';
 export 'equipments/presentation/widgets/base_card_view.dart';
 export 'equipments/presentation/widgets/equiment_grid_view.dart';

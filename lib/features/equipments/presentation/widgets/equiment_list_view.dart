@@ -2,7 +2,7 @@ import 'package:animate_equipment_view/animate_equipment_view.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ibuild_vendor/core/router/go_route.dart';
-import 'package:ibuild_vendor/features/equipments/data/models/equipment_model.dart';
+import 'package:ibuild_vendor/features/equipments/data/models/subcategory_model.dart';
 
 import 'base_card_view.dart';
 
@@ -13,7 +13,7 @@ class ListViewContent extends StatefulWidget {
       this.tabController,
       required this.equipments});
   final TabController? tabController;
-  final List<Equipment> equipments;
+  final List<SubcategoryModel> equipments;
   final BuildContext basePageContext;
 
   @override
@@ -49,17 +49,19 @@ class _ListViewContentState extends State<ListViewContent> {
       itemCount: widget.equipments.length,
       shrinkWrap: true,
       itemBuilder: (context, index) {
+        final equipment = widget.equipments[index];
         return Padding(
           padding: const EdgeInsets.all(15.0),
           child: AspectRatio(
             aspectRatio: 16 / 13,
             child: BaseCard(
-                viewType: CardViewType.list,
-                index: index,
-                equipmentData: widget.equipments[index],
-                onPressedCard: (index) {
-                  GoRouter.of(context).push(Routes.BOOKING_DATE);
-                }),
+              viewType: CardViewType.list,
+              index: index,
+              equipmentData: equipment,
+              onPressedCard: (index) {
+                GoRouter.of(context).push(Routes.DETAILS);
+              },
+            ),
           ),
         );
       },

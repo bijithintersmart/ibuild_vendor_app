@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ibuild_vendor/core/utils/app_utils/error_handler.dart';
 import 'package:ibuild_vendor/core/utils/common_widgets.dart/api_timeout_screen.dart';
 import 'package:ibuild_vendor/core/utils/common_widgets.dart/app_error_handler_widget.dart';
-import 'package:ibuild_vendor/core/utils/local_storage/global_local_storage.dart';
-import 'package:ibuild_vendor/core/utils/local_storage/keys.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 import '../../features/features.dart';
 import '../utils/services/global_network_service.dart';
@@ -17,7 +14,7 @@ final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 final PersistentTabController navController =
     PersistentTabController(initialIndex: 0);
 int bookingTabNotifier = 0;
-FTabController? tabController;
+// FTabController? tabController;
 void resetNavigationToHome() {
   if (shellNavigatorKey.currentState != null) {
     shellNavigatorKey.currentState!.goBranch(0, initialLocation: true);
@@ -56,11 +53,11 @@ abstract class Routes {
   static const String ADD_EQUIPMENT = '/add-equipment';
 }
 
-Future<bool> _authStatus() async {
-  final authToken =
-      GlobalLocalStorage().getString(GlobalLocalStorageKeys.AUTH_TOKEN);
-  return authToken != null;
-}
+// Future<bool> _authStatus() async {
+//   final authToken =
+//       GlobalLocalStorage().getString(GlobalLocalStorageKeys.AUTH_TOKEN);
+//   return authToken != null;
+// }
 
 class AppRouter {
   static final GoRouter router = GoRouter(
@@ -145,7 +142,9 @@ class AppRouter {
       GoRoute(
         path: Routes.EQUIPMENTS,
         name: Routes.EQUIPMENTS,
-        builder: (_, state) => const EquipmentScreen(),
+        builder: (_, state) => const EquipmentScreen(
+          equipments: [],
+        ),
       ),
       GoRoute(
         path: Routes.DETAILS,
@@ -155,7 +154,9 @@ class AppRouter {
       GoRoute(
         path: Routes.BOOKING_DATE,
         name: Routes.BOOKING_DATE,
-        builder: (_, state) => const BookingDatePickerScreen(),
+        builder: (_, state) => const BookingDatePickerScreen(
+          equipments: [],
+        ),
       ),
       GoRoute(
         path: Routes.BOOKING,

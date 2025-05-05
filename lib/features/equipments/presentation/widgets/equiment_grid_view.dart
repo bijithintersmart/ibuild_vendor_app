@@ -2,7 +2,7 @@ import 'package:animate_equipment_view/animate_equipment_view.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ibuild_vendor/core/router/go_route.dart';
-import 'package:ibuild_vendor/features/equipments/data/models/equipment_model.dart';
+import 'package:ibuild_vendor/features/equipments/data/models/subcategory_model.dart';
 
 import 'base_card_view.dart';
 
@@ -13,7 +13,7 @@ class GridViewContent extends StatefulWidget {
       this.tabController,
       required this.equipments});
   final TabController? tabController;
-  final List<Equipment> equipments;
+  final List<SubcategoryModel> equipments;
   final BuildContext basePageContext;
 
   @override
@@ -45,7 +45,7 @@ class _GridViewContentState extends State<GridViewContent> {
       controller: _scrollController,
       shrinkWrap: true,
       crossAxisCount: 2,
-      childAspectRatio: 16 / 25.5,
+      childAspectRatio: 16 / 28.5,
       mainAxisSpacing: 10,
       crossAxisSpacing: 10,
       padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -56,7 +56,7 @@ class _GridViewContentState extends State<GridViewContent> {
           index: index,
           equipmentData: widget.equipments[index],
           onPressedCard: (index) {
-            GoRouter.of(context).push(Routes.BOOKING_DATE);
+                GoRouter.of(context).push(Routes.DETAILS);
           },
         ),
       ),

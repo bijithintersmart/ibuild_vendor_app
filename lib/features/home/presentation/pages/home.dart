@@ -43,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ignorePointer: true,
                 onTap: () {},
                 badgeContent: Text(
-                  "${notificationCount}",
+                    "$notificationCount",
                   style: Theme.of(context)
                       .textTheme
                       .bodySmall!

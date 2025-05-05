@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:ibuild_vendor/features/details/presentation/widgets/booking_calendar_view.dart';
 import 'package:ibuild_vendor/features/details/presentation/widgets/booking_option_widget.dart';
+import 'package:ibuild_vendor/features/equipments/data/models/subcategory_model.dart';
 
 class BookingDatePickerScreen extends StatefulWidget {
-  const BookingDatePickerScreen({super.key});
+  final List<SubcategoryModel> equipments;
+  const BookingDatePickerScreen({super.key, required this.equipments});
 
   @override
   State<BookingDatePickerScreen> createState() =>
@@ -23,7 +24,8 @@ class _BookingDatePickerScreenState extends State<BookingDatePickerScreen>
         backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
-          onPressed: () {GoRouter.of(context).pop();
+          onPressed: () {
+            Navigator.of(context).pop();
           },
           icon: const Icon(
             Icons.arrow_back_ios_new_rounded,
@@ -51,7 +53,9 @@ class _BookingDatePickerScreenState extends State<BookingDatePickerScreen>
             const SizedBox(height: 16),
             const BookingCalendarView(),
             const SizedBox(height: 24),
-            const BookingOptionWidget(),
+            BookingOptionWidget(
+              equipments: widget.equipments,
+            ),
           ],
         ),
       ),

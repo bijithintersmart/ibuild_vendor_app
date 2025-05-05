@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ibuild_vendor/core/constant/app_assets.dart';
+import 'package:ibuild_vendor/core/router/go_route.dart';
 import 'package:ibuild_vendor/core/theme/app_colors.dart';
 import 'package:ibuild_vendor/core/utils/app_utils/functions.dart';
 
@@ -71,7 +72,10 @@ class CompletedOrdersWidget extends StatelessWidget {
                                     .copyWith(color: AppColors.grey)),
                             const SizedBox(height: 15),
                             GestureDetector(
-                              onTap: () {},
+                              onTap: () {
+                                navController.jumpToTab(2);
+                                bookingTabNotifier = 2;
+                              },
                               child: Text(
                                 'View Details',
                                 style: Theme.of(context)

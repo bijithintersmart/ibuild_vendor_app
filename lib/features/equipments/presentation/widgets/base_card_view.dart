@@ -1,7 +1,7 @@
 import 'package:animate_equipment_view/animate_equipment_view.dart'
     show AnimatedEquipmentCard, CardViewType;
 import 'package:flutter/widgets.dart';
-import 'package:ibuild_vendor/features/equipments/data/models/equipment_model.dart';
+import 'package:ibuild_vendor/features/equipments/data/models/subcategory_model.dart';
 
 import '../pages/equipments.dart';
 
@@ -17,7 +17,7 @@ class BaseCard extends StatefulWidget {
   final int index;
   final OnPressedCard onPressedCard;
   final CardViewType viewType;
-  final Equipment equipmentData;
+  final SubcategoryModel equipmentData;
 
   @override
   State<BaseCard> createState() => _BaseCardState();

@@ -3,7 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:ibuild_vendor/core/theme/app_colors.dart';
 import 'package:ibuild_vendor/core/utils/app_utils/navbar_icons.dart';
 import 'package:ibuild_vendor/features/booking/presentation/pages/booking.dart';
-import 'package:ibuild_vendor/features/equipments/presentation/pages/equipments.dart';
+import 'package:ibuild_vendor/features/equipments/presentation/pages/category_listing.dart';
 import 'package:ibuild_vendor/features/home/presentation/pages/home.dart';
 import 'package:ibuild_vendor/features/notification/presentation/pages/notification.dart';
 import 'package:ibuild_vendor/features/profile/presentation/pages/profile.dart';
@@ -49,7 +49,7 @@ class _SkeltonState extends State<Skelton> {
       ),
     ),
     PersistentTabConfig(
-        screen: const EquipmentScreen(),
+        screen: const CategoryListingScreen(),
         item: ItemConfig(
           icon: const Icon(
             Icons.local_shipping,

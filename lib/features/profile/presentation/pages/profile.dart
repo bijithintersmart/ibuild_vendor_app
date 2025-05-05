@@ -105,13 +105,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ProfileTile(
               onTap: () {
                 navController.jumpToTab(2);
-                if(tabController!=null){
-                tabController?.animateTo(
-                  2,
-                  duration: const Duration(milliseconds: 400),
-                  curve: Curves.easeIn,
-                );
-                }
+                bookingTabNotifier = 2;
               },
               title: "Your Orders",
               subTitle: "Past Orders",

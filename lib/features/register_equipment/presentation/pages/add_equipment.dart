@@ -8,7 +8,8 @@ import 'package:ibuild_vendor/features/register_equipment/presentation/widgets/i
 import 'package:ibuild_vendor/features/register_equipment/presentation/widgets/vehicle_type_widget.dart';
 
 class AddEquipmentScreen extends StatefulWidget {
-  const AddEquipmentScreen({super.key});
+  final VoidCallback? onSubmit;
+  const AddEquipmentScreen({super.key, this.onSubmit});
 
   @override
   State<AddEquipmentScreen> createState() => _AddEquipmentScreenState();
@@ -208,7 +209,8 @@ class _AddEquipmentScreenState extends State<AddEquipmentScreen> {
         child: ElevatedButton(
             style: ElevatedButton.styleFrom(
                 minimumSize: const Size(double.infinity, 40)),
-            onPressed: () {
+            onPressed: widget.onSubmit ??
+                () {
               GoRouter.of(context).push(
                 Routes.SKELETON,
               );
