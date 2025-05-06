@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:ibuild_vendor/core/utils/app_utils/extension.dart';
 
 class Validator {
-  static bool debugValidation = kReleaseMode;
+  static bool debugValidation = false;
   static String? validateEmail(String? value) {
     if (!debugValidation) return null;
     if (value == null || value.trim().isEmpty) {

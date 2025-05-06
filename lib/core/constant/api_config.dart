@@ -4,4 +4,9 @@ class ApiConfig {
 }
 
 class ApiEndPoints {
+  static const String login = '';
+  static const String register = '';
+  static const String forgotPassword = '';
+  static const String otherLogin = '';
+  static const String getProfile = '';
 }

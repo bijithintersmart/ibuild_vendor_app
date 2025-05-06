@@ -127,8 +127,6 @@ class _NotificationListScreenState extends State<NotificationListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final primaryColor = Theme.of(context).primaryColor;
-
     return Scaffold(
       backgroundColor: Colors.grey[50],
       appBar: AppBar(
@@ -239,60 +237,48 @@ class _NotificationListScreenState extends State<NotificationListScreen> {
                   child: Card(
                     color: AppColors.cardGrey,
                     margin: const EdgeInsets.symmetric(vertical: 4),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: notification.isRead
-                            ? null
-                            : Border(
-                                left: BorderSide(
-                                  color: primaryColor,
-                                  width: 4,
-                                ),
-                              ),
+                    child: ListTile(
+                      contentPadding: EdgeInsets.only(
+                        left: notification.isRead ? 16 : 12,
+                        right: 16,
+                        top: 12,
+                        bottom: 12,
                       ),
-                      child: ListTile(
-                        contentPadding: EdgeInsets.only(
-                          left: notification.isRead ? 16 : 12,
-                          right: 16,
-                          top: 12,
-                          bottom: 12,
+                      title: Text(
+                        notification.title,
+                        style: TextStyle(
+                          fontWeight: notification.isRead
+                              ? FontWeight.normal
+                              : FontWeight.bold,
+                          color: Colors.black87,
                         ),
-                        title: Text(
-                          notification.title,
-                          style: TextStyle(
-                            fontWeight: notification.isRead
-                                ? FontWeight.normal
-                                : FontWeight.bold,
-                            color: Colors.black87,
+                      ),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(height: 4),
+                          Text(
+                            notification.message,
+                            style: TextStyle(
+                              color: Colors.grey[700],
+                            ),
                           ),
-                        ),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(height: 4),
-                            Text(
-                              notification.message,
-                              style: TextStyle(
-                                color: Colors.grey[700],
-                              ),
+                          const SizedBox(height: 6),
+                          Text(
+                            _formatTimestamp(notification.timestamp),
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.grey[500],
                             ),
-                            const SizedBox(height: 6),
-                            Text(
-                              _formatTimestamp(notification.timestamp),
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Colors.grey[500],
-                              ),
-                            ),
-                          ],
-                        ),
-                        isThreeLine: true,
-                        onTap: () {
-                          _markAsRead(notification.id);
-                          scaffoldToast(
-                              'Viewed notification: ${notification.title}');
-                        },
+                          ),
+                        ],
                       ),
+                      isThreeLine: true,
+                      onTap: () {
+                        _markAsRead(notification.id);
+                        scaffoldToast(
+                            'Viewed notification: ${notification.title}');
+                      },
                     ),
                   ),
                 );
