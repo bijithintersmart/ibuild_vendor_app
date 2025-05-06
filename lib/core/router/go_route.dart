@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:ibuild_vendor/core/utils/app_utils/error_handler.dart';
 import 'package:ibuild_vendor/core/utils/common_widgets.dart/api_timeout_screen.dart';
 import 'package:ibuild_vendor/core/utils/common_widgets.dart/app_error_handler_widget.dart';
+import 'package:ibuild_vendor/skelton.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 import '../../features/features.dart';
 import '../utils/services/global_network_service.dart';
@@ -14,7 +15,6 @@ final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 final PersistentTabController navController =
     PersistentTabController(initialIndex: 0);
 int bookingTabNotifier = 0;
-// FTabController? tabController;
 void resetNavigationToHome() {
   if (shellNavigatorKey.currentState != null) {
     shellNavigatorKey.currentState!.goBranch(0, initialLocation: true);

@@ -9,4 +9,5 @@ class ApiEndPoints {
   static const String forgotPassword = '';
   static const String otherLogin = '';
   static const String getProfile = '';
+  static const String home = '';
 }

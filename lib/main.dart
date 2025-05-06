@@ -3,9 +3,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:ibuild_vendor/container.dart';
 import 'package:ibuild_vendor/core/router/go_route.dart';
 import 'package:ibuild_vendor/core/theme/app_theme.dart';
 import 'package:ibuild_vendor/core/utils/app_utils/functions.dart';
+import 'package:ibuild_vendor/features/authentication/presentation/bloc/authentication_bloc.dart';
+import 'package:ibuild_vendor/features/home/presentation/bloc/home_bloc.dart';
 
 import 'core/utils/app_utils/error_handler.dart';
 
@@ -41,18 +44,32 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value: AppRouter.networkCubit,
-      child: MaterialApp.router(
-        title: 'IBUILD Vendor app',
-        debugShowCheckedModeBanner: false,
-        themeMode: ThemeMode.light,
-        routerConfig: AppRouter.router,
-        theme: AppTheme.appTheme,
-        builder: EasyLoading.init(
-          builder: (context, child) {
-            return child ?? const SizedBox();
-          },
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => HomeBloc(
+            repository: locator(),
+          ),
+        ),
+        BlocProvider(
+          create: (context) => AuthenticationBloc(
+            authRepository: locator(),
+          ),
+        ),
+      ],
+      child: BlocProvider.value(
+        value: AppRouter.networkCubit,
+        child: MaterialApp.router(
+          title: 'IBUILD Vendor app',
+          debugShowCheckedModeBanner: false,
+          themeMode: ThemeMode.light,
+          routerConfig: AppRouter.router,
+          theme: AppTheme.appTheme,
+          builder: EasyLoading.init(
+            builder: (context, child) {
+              return child ?? const SizedBox();
+            },
+          ),
         ),
       ),
     );

@@ -3,12 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:ibuild_vendor/core/router/go_route.dart';
 import 'package:ibuild_vendor/core/theme/app_colors.dart';
 import 'package:ibuild_vendor/core/utils/common_widgets.dart/input_field_widget.dart';
-import 'package:ibuild_vendor/features/equipments/data/models/subcategory_model.dart';
 import 'package:ibuild_vendor/features/features.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
-
-
-typedef OnPressedCard = Function(int index);
 
 class EquipmentScreen extends StatefulWidget {
   final List<SubcategoryModel> equipments;
