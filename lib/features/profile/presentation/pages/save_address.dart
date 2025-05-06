@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:latlong2/latlong.dart';
+
 import 'package:ibuild_vendor/core/theme/app_colors.dart';
-import 'package:ibuild_vendor/core/utils/app_utils/extension.dart';
-import 'package:ibuild_vendor/core/utils/common_widgets.dart/normal_text.dart';
+import 'package:ibuild_vendor/features/profile/presentation/widgets/map_widget.dart';
 import 'package:ibuild_vendor/features/profile/presentation/widgets/address_bottom_sheet.dart';
 
 class SaveAddressScreen extends StatefulWidget {
@@ -14,21 +15,13 @@ class SaveAddressScreen extends StatefulWidget {
 }
 
 class _SaveAddressScreenState extends State<SaveAddressScreen> {
-  final LatLng _initialPosition = const LatLng(25.2048, 55.2708);
-  Set<Marker> _markers = {};
-
   @override
   void initState() {
     super.initState();
-    _markers.add(
-      Marker(
-        markerId: const MarkerId('selected_location'),
-        position: _initialPosition,
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange),
-      ),
-    );
   }
 
+  final MapController _mapController = MapController();
+  final initialLocation = const LatLng(25.078377, 55.212439);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,52 +37,20 @@ class _SaveAddressScreenState extends State<SaveAddressScreen> {
             }
           },
         ),
+        centerTitle: true,
         title: Text(
           'Confirm delivery location',
           style: Theme.of(context)
               .textTheme
-              .titleLarge!
+              .titleMedium!
               .copyWith(fontWeight: FontWeight.bold),
           textAlign: TextAlign.center,
         ),
       ),
       body: Stack(
         children: [
-          // GoogleMap(
-          //   initialCameraPosition: CameraPosition(
-          //     target: _initialPosition,
-          //     zoom: 14,
-          //   ),
-          //   markers: _markers,
-          //   myLocationEnabled: true,
-          //   myLocationButtonEnabled: false,
-          //   zoomControlsEnabled: false,
-          //   onTap: (LatLng position) {
-          //     setState(() {
-          //       _markers.clear();
-          //       _markers.add(
-          //         Marker(
-          //           markerId: const MarkerId('selected_location'),
-          //           position: position,
-          //           icon: BitmapDescriptor.defaultMarkerWithHue(
-          //               BitmapDescriptor.hueOrange),
-          //         ),
-          //       );
-          //     });
-          //   },
-          // ),
-          Container(
-            height: context.screenHeight,
-            width: context.screenWidth,
-            color: Colors.green.withOpacity(.5),
-            child: Center(
-                child: NormalText(
-              text: "Google Map",
-              style: Theme.of(context)
-                  .textTheme
-                  .titleLarge!
-                  .copyWith(color: Colors.white),
-            )),
+          MapControllerPage(
+            mapController: _mapController,
           ),
           Align(
             alignment: Alignment.topCenter,
@@ -148,22 +109,27 @@ class _SaveAddressScreenState extends State<SaveAddressScreen> {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Container(
-                    padding: const EdgeInsets.all(4),
-                    decoration: BoxDecoration(
-                      color: AppColors.secondary,
-                      borderRadius: BorderRadius.circular(50),
+                  InkWell(
+                    onTap: () {
+                      _mapController.move(initialLocation, 10);
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(4),
+                      decoration: BoxDecoration(
+                        color: AppColors.secondary,
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      child: const Icon(Icons.my_location,
+                          color: Colors.white, size: 18),
                     ),
-                    child: const Icon(Icons.my_location,
-                        color: Colors.white, size: 18),
                   ),
                   const SizedBox(width: 8),
                   Text(
                     'Locate Me',
-                    style: TextStyle(
-                      color: AppColors.secondary,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          color: AppColors.secondary,
+                          fontWeight: FontWeight.bold,
+                        ),
                   ),
                 ],
               ),
@@ -192,31 +158,25 @@ class _SaveAddressScreenState extends State<SaveAddressScreen> {
                           borderRadius: BorderRadius.circular(50),
                         ),
                         child:
-                            const Icon(Icons.location_on, color: Colors.orange),
+                            Icon(Icons.location_on, color: AppColors.secondary),
                       ),
                       const SizedBox(width: 8),
-                      const Expanded(
+                      Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               'Dubai',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                              ),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyLarge
+                                  ?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
                             ),
                             Text(
-                              'Sheikh Mohammed Bin Rashed Boulevard',
-                              style: TextStyle(
-                                fontSize: 14,
-                              ),
-                            ),
-                            Text(
-                              'Downtown',
-                              style: TextStyle(
-                                fontSize: 14,
-                              ),
+                              'Sheikh Mohammed Bin Rashed Boulevard Downtown',
+                              style: Theme.of(context).textTheme.bodyLarge,
                             ),
                           ],
                         ),
@@ -230,11 +190,11 @@ class _SaveAddressScreenState extends State<SaveAddressScreen> {
                         ),
                         child: Text(
                           'CHANGE',
-                          style: TextStyle(
-                            color: AppColors.secondary,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 12,
-                          ),
+                          style:
+                              Theme.of(context).textTheme.bodySmall?.copyWith(
+                                    color: AppColors.secondary,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                         ),
                       ),
                     ],
@@ -243,6 +203,7 @@ class _SaveAddressScreenState extends State<SaveAddressScreen> {
                   ElevatedButton(
                     onPressed: () {
                       showModalBottomSheet(
+                        showDragHandle: true,
                         context: context,
                         backgroundColor: Colors.transparent,
                         isScrollControlled: true,
@@ -257,7 +218,13 @@ class _SaveAddressScreenState extends State<SaveAddressScreen> {
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                    child: const Text('Confirm Your Location'),
+                    child: Text(
+                      'Confirm Your Location',
+                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
                   ),
                   const SizedBox(height: 16),
                   Container(
