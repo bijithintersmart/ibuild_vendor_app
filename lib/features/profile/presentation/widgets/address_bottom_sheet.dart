@@ -53,16 +53,18 @@ class _AddressBottomSheetState extends State<AddressBottomSheet> {
                         children: [
                           Text(
                             'Dubai',
-                            style:
-                                Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
                           ),
                           Text(
                             'Sheikh Mohammed Bin Rashed Boulevard Downtown',
                             style: Theme.of(context)
                                 .textTheme
-                                .bodyLarge
+                                .bodyMedium
                                 ?.copyWith(),
                           ),
                         ],
@@ -83,17 +85,16 @@ class _AddressBottomSheetState extends State<AddressBottomSheet> {
                     'A detailed address will help our Delivery Partner reach your doorstep easily',
                     style: Theme.of(context)
                         .textTheme
-                        .bodyLarge
+                        .bodyMedium
                         ?.copyWith(color: AppColors.secondary),
                   ),
                 ),
                 const SizedBox(height: 24),
-                const Text(
+                Text(
                   'Save As',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14,
-                  ),
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
                 ),
                 const SizedBox(height: 12),
                 Row(
@@ -257,7 +258,7 @@ class _AddressBottomSheetState extends State<AddressBottomSheet> {
         ),
         child: Text(
           type,
-          style: TextStyle(
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
             color: isSelected ? const Color(0xFFf9a147) : Colors.black,
             fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
           ),
