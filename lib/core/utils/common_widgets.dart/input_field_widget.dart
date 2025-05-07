@@ -6,7 +6,7 @@ import 'package:ibuild_vendor/core/theme/app_colors.dart';
 import 'package:ibuild_vendor/core/utils/common_widgets.dart/normal_text.dart';
 
 class InputField extends StatelessWidget {
-  final String labelText;
+  final String? labelText;
   final TextEditingController? controller;
   final Widget? suffix;
   final Widget? preffix;
@@ -42,9 +42,10 @@ class InputField extends StatelessWidget {
   final double? elevation;
   final BorderRadius? feildRadius;
   final bool? autofocus;
+  final double textFeildHeight;
   InputField({
     super.key,
-    required this.labelText,
+    this.labelText,
     this.controller,
     this.decoration,
     this.contentPadding,
@@ -79,6 +80,7 @@ class InputField extends StatelessWidget {
     this.elevation = 0,
     this.feildRadius,
     this.autofocus,
+    this.textFeildHeight = 40,
     this.borderColor = Colors.transparent,
   });
 
@@ -98,9 +100,9 @@ class InputField extends StatelessWidget {
   );
   @override
   Widget build(BuildContext context) {
-    BorderRadius radius = feildRadius ?? BorderRadius.circular(15);
+    BorderRadius radius = feildRadius ?? BorderRadius.circular(10);
     final border = OutlineInputBorder(
-      borderRadius: feildRadius ?? BorderRadius.circular(15),
+      borderRadius: feildRadius ?? BorderRadius.circular(10),
       borderSide: BorderSide(
         width: borderWidth,
         color: borderColor,
@@ -123,60 +125,65 @@ class InputField extends StatelessWidget {
                   ),
             ),
           ),
-        TextFormField(
-          initialValue: initialValue,
-          validator: validator,
-          autofocus: autofocus ?? false,
-          textAlignVertical: TextAlignVertical.center,
-          textAlign: TextAlign.start,
-          autovalidateMode: autovalidateMode,
-          onChanged: onChanged,
-          forceErrorText: errorMessage,
-          textInputAction: textInputAction,
-          obscureText: obscureText,
-          obscuringCharacter: obscuringCharacter,
-          controller: controller,
-          maxLines: maxLine,
-          keyboardType: keyboardType,
-          readOnly: readOnly,
-          inputFormatters: inputFormatters,
-          onFieldSubmitted: onFieldSubmitted,
-          onSaved: onSaved,
-          style: textStyle,
-          onTap: onTap,
-          textCapitalization: textCapitalization,
-          maxLength: maxLength,
-          decoration: decoration ??
-              InputDecoration(
-                filled: true,
-                prefixIcon: preffix,
-                contentPadding: contentPadding,
-                errorMaxLines: errorMaxLines ?? 3,
-                counterText: '',
-                suffixIcon: suffix,
-                border: border,
-                enabledBorder: border,
-                errorBorder: border.copyWith(
-                  borderRadius: radius,
-                  borderSide: const BorderSide(
-                    width: 2,
-                    color: Colors.red,
+        ConstrainedBox(
+          constraints: BoxConstraints(
+              minHeight: textFeildHeight, maxHeight: textFeildHeight + 30),
+          child: TextFormField(
+            initialValue: initialValue,
+            validator: validator,
+            autofocus: autofocus ?? false,
+            textAlignVertical: TextAlignVertical.center,
+            textAlign: TextAlign.start,
+            autovalidateMode: autovalidateMode,
+            onChanged: onChanged,
+            forceErrorText: errorMessage,
+            textInputAction: textInputAction,
+            obscureText: obscureText,
+            obscuringCharacter: obscuringCharacter,
+            controller: controller,
+            maxLines: maxLine,
+            keyboardType: keyboardType,
+            readOnly: readOnly,
+            inputFormatters: inputFormatters,
+            onFieldSubmitted: onFieldSubmitted,
+            onSaved: onSaved,
+            style: textStyle,
+            onTap: onTap,
+            textCapitalization: textCapitalization,
+            maxLength: maxLength,
+            decoration: decoration ??
+                InputDecoration(
+                  filled: true,
+                  prefixIcon: preffix,
+                  contentPadding: contentPadding,
+                  errorMaxLines: errorMaxLines ?? 3,
+                  counterText: '',
+                  suffixIcon: suffix,
+                  border: border,
+                  enabledBorder: border,
+                  errorBorder: border.copyWith(
+                    borderRadius: radius,
+                    borderSide: const BorderSide(
+                      width: 2,
+                      color: Colors.red,
+                    ),
                   ),
-                ),
-                focusedErrorBorder: border.copyWith(
-                  borderRadius: radius,
-                  borderSide: const BorderSide(
-                    width: 2,
-                    color: Colors.red,
+                  focusedErrorBorder: border.copyWith(
+                    borderRadius: radius,
+                    borderSide: const BorderSide(
+                      width: 2,
+                      color: Colors.red,
+                    ),
                   ),
+                  focusedBorder: border,
+                  labelText:
+                      hideLabel || (labelText ?? "").isEmpty ? null : labelText,
+                  labelStyle: hintStyle,
+                  hintText: hintText ?? (hideLabel ? labelText : null),
+                  hintStyle: hintStyle,
+                  fillColor: fillColors ?? AppColors.greyLight,
                 ),
-                focusedBorder: border,
-                labelText: hideLabel || labelText.isEmpty ? null : labelText,
-                labelStyle: hintStyle,
-                hintText: hintText ?? (hideLabel ? labelText : null),
-                hintStyle: hintStyle,
-                fillColor: fillColors ?? AppColors.greyLight,
-              ),
+          ),
         ),
       ],
     );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ibuild_vendor/core/theme/app_colors.dart';
+import 'package:ibuild_vendor/core/utils/app_utils/validator.dart';
 
 class CategoryDropdown extends StatefulWidget {
   const CategoryDropdown({super.key});
@@ -20,6 +21,17 @@ class _CategoryDropdownState extends State<CategoryDropdown> {
 
   @override
   Widget build(BuildContext context) {
+    final border = OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide(
+          color: AppColors.borderGrey,
+        ));
+    final errorBorder = border.copyWith(
+      borderSide: const BorderSide(
+        width: 2,
+        color: Colors.red,
+      ),
+    );
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -31,56 +43,54 @@ class _CategoryDropdownState extends State<CategoryDropdown> {
               ),
         ),
         const SizedBox(height: 8),
-        Container(
+        DropdownButtonFormField<String>(
           padding: const EdgeInsets.symmetric(horizontal: 12),
-          decoration: BoxDecoration(
-            color: AppColors.greyLight,
-            border: Border.all(
-              color: AppColors.borderGrey,
-            ),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: DropdownButtonFormField<String>(
-            isExpanded: true,
-            hint: Text(
-              "Choose a category",
-              style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                    color: AppColors.grey,
-                    fontSize: 12,
-                  ),
-            ),
-            decoration: const InputDecoration(
-              hintText: 'Choose a category',
-              border: InputBorder.none,
-              focusedBorder: InputBorder.none,
-              enabledBorder: InputBorder.none,
-              contentPadding: EdgeInsets.symmetric(vertical: 12),
-            ),
-            value: selectedCategory,
-            items: categoryData.keys.map((category) {
-              return DropdownMenuItem(
-                value: category,
-                child: Row(
-                  children: [
-                    Icon(categoryIcons[category] ?? Icons.category),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Text(
-                        category,
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                    ),
-                  ],
+          dropdownColor: AppColors.greyLight,
+          focusColor: AppColors.greyLight,
+          isExpanded: true,
+          hint: Text(
+            "Choose a category",
+            style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                  color: AppColors.grey,
+                  fontSize: 12,
                 ),
-              );
-            }).toList(),
-            onChanged: (value) {
-              setState(() {
-                selectedCategory = value;
-                selectedSubcategory = null;
-              });
-            },
           ),
+          validator: (value) => Validator.validateNotEmpty(value, "Category"),
+          decoration: InputDecoration(
+            hintText: 'Choose a category',
+            fillColor: AppColors.greyLight,
+            filled: true,
+            border: border,
+            focusedBorder: border,
+            enabledBorder: border,
+            errorBorder: errorBorder,
+            focusedErrorBorder: errorBorder,
+            contentPadding: const EdgeInsets.symmetric(vertical: 12),
+          ),
+          value: selectedCategory,
+          items: categoryData.keys.map((category) {
+            return DropdownMenuItem(
+              value: category,
+              child: Row(
+                children: [
+                  Icon(categoryIcons[category] ?? Icons.category),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      category,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }).toList(),
+          onChanged: (value) {
+            setState(() {
+              selectedCategory = value;
+              selectedSubcategory = null;
+            });
+          },
         ),
         const SizedBox(height: 16),
         Text(
@@ -91,56 +101,56 @@ class _CategoryDropdownState extends State<CategoryDropdown> {
               ),
         ),
         const SizedBox(height: 8),
-        Container(
+        DropdownButtonFormField<String>(
           padding: const EdgeInsets.symmetric(horizontal: 12),
-          decoration: BoxDecoration(
-            color: AppColors.greyLight,
-            border: Border.all(
-              color: AppColors.borderGrey,
-            ),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: DropdownButtonFormField<String>(
-            hint: Text(
-              "Choose a subcategory vehicle",
-              style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                    color: AppColors.grey,
-                    fontSize: 12,
-                  ),
-            ),
-            isExpanded: true,
-            icon: const Icon(Icons.keyboard_arrow_down),
-            decoration: const InputDecoration(
-              hintText: 'Choose a subcategory',
-              border: InputBorder.none,
-              focusedBorder: InputBorder.none,
-              enabledBorder: InputBorder.none,
-              contentPadding: EdgeInsets.symmetric(vertical: 12),
-            ),
-            value: selectedSubcategory,
-            items: subcategories.map((subcategory) {
-              return DropdownMenuItem(
-                value: subcategory,
-                child: Row(
-                  children: [
-                    const Icon(Icons.subdirectory_arrow_right),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Text(subcategory,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context).textTheme.bodyMedium),
-                    ),
-                  ],
+          dropdownColor: AppColors.greyLight,
+          focusColor: AppColors.greyLight,
+          hint: Text(
+            "Choose a subcategory vehicle",
+            style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                  color: AppColors.grey,
+                  fontSize: 12,
                 ),
-              );
-            }).toList(),
-            onChanged: (value) {
-              setState(() {
-                selectedSubcategory = value;
-              });
-            },
           ),
+          validator: (value) =>
+              Validator.validateNotEmpty(value, "subcategory"),
+        
+          isExpanded: true,
+          icon: const Icon(Icons.keyboard_arrow_down),
+          decoration: InputDecoration(
+            hintText: 'Choose a subcategory',
+            fillColor: AppColors.greyLight,
+            filled: true,
+            border: border,
+            focusedBorder: border,
+            enabledBorder: border,
+            errorBorder: errorBorder,
+            focusedErrorBorder: errorBorder,
+            contentPadding: const EdgeInsets.symmetric(vertical: 12),
+          ),
+          value: selectedSubcategory,
+          items: subcategories.map((subcategory) {
+            return DropdownMenuItem(
+              value: subcategory,
+              child: Row(
+                children: [
+                  const Icon(Icons.subdirectory_arrow_right),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(subcategory,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.bodyMedium),
+                  ),
+                ],
+              ),
+            );
+          }).toList(),
+          onChanged: (value) {
+            setState(() {
+              selectedSubcategory = value;
+            });
+          },
         ),
       ],
     );
