@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:ibuild_vendor/core/theme/app_colors.dart';
 import 'package:ibuild_vendor/core/utils/app_utils/extension.dart';
+import 'package:ibuild_vendor/core/utils/services/location_services.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:flutter_map_cancellable_tile_provider/flutter_map_cancellable_tile_provider.dart';
 
 class MapControllerPage extends StatefulWidget {
-  const MapControllerPage({super.key, required this.mapController});
+  const MapControllerPage(
+      {super.key, required this.mapController, this.onLoctionSave});
+
+  final Function(Placemark)? onLoctionSave;
   final MapController mapController;
 
   @override
@@ -42,6 +47,12 @@ class MapControllerPageState extends State<MapControllerPage>
           child: Icon(Icons.location_pin, size: 60, color: AppColors.secondary),
         ),
       );
+
+  @override
+  void initState() {
+    updatePLaceDetails(latLng);
+    super.initState();
+  }
 
   void animatedMapMove(LatLng destLocation, double destZoom) {
     final camera = widget.mapController.camera;
@@ -82,12 +93,22 @@ class MapControllerPageState extends State<MapControllerPage>
     controller.forward();
   }
 
-  void updateMapMarker(LatLng lat) {
-    setState(() {
-      customMarkers.clear();
-      customMarkers.add(buildPin(lat));
-      animatedMapMove(lat, 12);
-    });
+  void updatePLaceDetails(LatLng lat) async {
+    final place = await LocationService.getLocationDetails(
+        latitude: lat.latitude, longitude: lat.longitude);
+    if (place != null) {
+      if (widget.onLoctionSave != null) {
+        widget.onLoctionSave!(place);
+      }
+    }
+  }
+
+  void updateMapMarker(LatLng lat) async {
+    customMarkers.clear();
+    customMarkers.add(buildPin(lat));
+    animatedMapMove(lat, 12);
+    updatePLaceDetails(lat);
+    setState(() {});
   }
 
   @override
@@ -97,7 +118,7 @@ class MapControllerPageState extends State<MapControllerPage>
       child: FlutterMap(
         mapController: widget.mapController,
         options: MapOptions(
-            onTap: (pos, latLng) {
+          onTap: (pos, latLng) {
             updateMapMarker(latLng);
           },
           initialCenter: latLng,

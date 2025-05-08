@@ -69,12 +69,12 @@ class LocationService {
     }
   }
 
-  static Future<String> getLocationDetails({
+  static Future<Placemark?> getLocationDetails({
     required double latitude,
     required double longitude,
   }) async {
     if (!await requestLocationPermission()) {
-      return 'No results found.';
+      return null;
     }
     final connectivity = await Connectivity().checkConnectivity();
     if (connectivity.first != ConnectivityResult.none) {
@@ -82,13 +82,13 @@ class LocationService {
         final placemarks = await placemarkFromCoordinates(latitude, longitude);
         if (placemarks.isNotEmpty) {
           final place = placemarks.first;
-          return "${place.name}, ${place.subLocality}, ${place.locality}, ${place.administrativeArea}";
+          return place;
         }
       } catch (e) {
         AppLogger.logError('Geocoding error: $e');
       }
     }
-    return 'No results found.';
+    return null;
   }
 
   /// Dialog to prompt enabling location services.

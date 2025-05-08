@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ibuild_vendor/core/services/location_services.dart';
+import 'package:ibuild_vendor/core/utils/services/location_services.dart';
 import 'package:ibuild_vendor/core/utils/app_utils/app_logger.dart';
 import 'package:latlong2/latlong.dart';
 
@@ -22,10 +22,20 @@ class _SaveAddressScreenState extends State<SaveAddressScreen> {
     super.initState();
   }
 
+  String formatAddress(String input) {
+    final parts = input
+        .split(',')
+        .map((e) => e.trim())
+        .where((e) => e.isNotEmpty)
+        .toList();
+    return parts.join(', ');
+  }
+
   final MapController _mapController = MapController();
   final initialLocation = const LatLng(25.078377, 55.212439);
   final widgetKey = GlobalKey<MapControllerPageState>();
-
+  String currentLocation = '';
+  String currentAddress = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,6 +64,27 @@ class _SaveAddressScreenState extends State<SaveAddressScreen> {
       body: Stack(
         children: [
           MapControllerPage(
+            onLoctionSave: (place) {
+              setState(() {
+                String? clean(String? value) =>
+                    (value != null && value.trim().isNotEmpty)
+                        ? value.trim()
+                        : null;
+                final parts = [
+                  clean(place.name),
+                  clean(place.subLocality),
+                  clean(place.locality),
+                  clean(place.administrativeArea),
+                ].whereType<String>().toList();
+                currentAddress = parts.join(', ');
+                currentLocation = clean(place.locality) ??
+                    clean(place.subLocality) ??
+                    clean(place.name) ??
+                    'Unknown location';
+                AppLogger.logInfo(currentAddress);
+                AppLogger.logInfo(currentLocation);
+              });
+            },
             key: widgetKey,
             mapController: _mapController,
           ),
@@ -183,7 +214,7 @@ class _SaveAddressScreenState extends State<SaveAddressScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Dubai',
+                              currentLocation,
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyLarge
@@ -192,7 +223,7 @@ class _SaveAddressScreenState extends State<SaveAddressScreen> {
                                   ),
                             ),
                             Text(
-                              'Sheikh Mohammed Bin Rashed Boulevard Downtown',
+                              formatAddress(currentAddress),
                               style: Theme.of(context).textTheme.bodyLarge,
                             ),
                           ],
@@ -224,7 +255,10 @@ class _SaveAddressScreenState extends State<SaveAddressScreen> {
                         context: context,
                         backgroundColor: Colors.transparent,
                         isScrollControlled: true,
-                        builder: (context) => const AddressBottomSheet(),
+                        builder: (context) => AddressBottomSheet(
+                          location: currentLocation,
+                          address: currentAddress,
+                        ),
                       );
                     },
                     style: ElevatedButton.styleFrom(
