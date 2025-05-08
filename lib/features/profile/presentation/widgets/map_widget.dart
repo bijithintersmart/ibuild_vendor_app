@@ -3,24 +3,29 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:ibuild_vendor/core/theme/app_colors.dart';
 import 'package:ibuild_vendor/core/utils/app_utils/extension.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:flutter_map_cancellable_tile_provider/flutter_map_cancellable_tile_provider.dart';
 
 class MapControllerPage extends StatefulWidget {
-  static const String route = 'map_controller';
-  final MapController mapController;
   const MapControllerPage({super.key, required this.mapController});
+  final MapController mapController;
 
   @override
   MapControllerPageState createState() => MapControllerPageState();
 }
 
-class MapControllerPageState extends State<MapControllerPage> {
-  final latLng = const LatLng(25.078377, 55.212439);
-
+class MapControllerPageState extends State<MapControllerPage>
+    with TickerProviderStateMixin {
+  bool counterRotate = false;
   late final customMarkers = <Marker>[
     buildPin(const LatLng(25.078377, 55.212439))
   ];
-  bool counterRotate = false;
+
+  final latLng = const LatLng(25.078377, 55.212439);
   Alignment selectedAlignment = Alignment.topCenter;
+
+  static const _finishedId = 'AnimatedMapController#MoveFinished';
+  static const _inProgressId = 'AnimatedMapController#MoveInProgress';
+  static const _startedId = 'AnimatedMapController#MoveStarted';
 
   Marker buildPin(LatLng point) => Marker(
         point: point,
@@ -37,6 +42,54 @@ class MapControllerPageState extends State<MapControllerPage> {
           child: Icon(Icons.location_pin, size: 60, color: AppColors.secondary),
         ),
       );
+
+  void animatedMapMove(LatLng destLocation, double destZoom) {
+    final camera = widget.mapController.camera;
+    final latTween = Tween<double>(
+        begin: camera.center.latitude, end: destLocation.latitude);
+    final lngTween = Tween<double>(
+        begin: camera.center.longitude, end: destLocation.longitude);
+    final zoomTween = Tween<double>(begin: camera.zoom, end: destZoom);
+    final controller = AnimationController(
+        duration: const Duration(milliseconds: 500), vsync: this);
+    final Animation<double> animation =
+        CurvedAnimation(parent: controller, curve: Curves.fastOutSlowIn);
+    final startIdWithTarget =
+        '$_startedId#${destLocation.latitude},${destLocation.longitude},$destZoom';
+    bool hasTriggeredMove = false;
+    controller.addListener(() {
+      final String id;
+      if (animation.value == 1.0) {
+        id = _finishedId;
+      } else if (!hasTriggeredMove) {
+        id = startIdWithTarget;
+      } else {
+        id = _inProgressId;
+      }
+      hasTriggeredMove |= widget.mapController.move(
+        LatLng(latTween.evaluate(animation), lngTween.evaluate(animation)),
+        zoomTween.evaluate(animation),
+        id: id,
+      );
+    });
+    animation.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        controller.dispose();
+      } else if (status == AnimationStatus.dismissed) {
+        controller.dispose();
+      }
+    });
+    controller.forward();
+  }
+
+  void updateMapMarker(LatLng lat) {
+    setState(() {
+      customMarkers.clear();
+      customMarkers.add(buildPin(lat));
+      animatedMapMove(lat, 12);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -44,17 +97,21 @@ class MapControllerPageState extends State<MapControllerPage> {
       child: FlutterMap(
         mapController: widget.mapController,
         options: MapOptions(
-          onTap: (pos, latLng) {
-            setState(() {
-              customMarkers.clear();
-              customMarkers.add(buildPin(latLng));
-              widget.mapController.move(latLng, 9.2);
-            });
+            onTap: (pos, latLng) {
+            updateMapMarker(latLng);
           },
           initialCenter: latLng,
-          initialZoom: 9.2,
+          initialZoom: 12,
+          maxZoom: 12,
+          minZoom: 8,
         ),
         children: [
+          TileLayer(
+            urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+            userAgentPackageName: 'dev.fleaflet.flutter_map.example',
+            tileProvider: CancellableNetworkTileProvider(),
+            tileUpdateTransformer: _animatedMoveTileUpdateTransformer,
+          ),
           MarkerLayer(
             markers: customMarkers,
             rotate: counterRotate,
@@ -65,3 +122,27 @@ class MapControllerPageState extends State<MapControllerPage> {
     );
   }
 }
+
+final _animatedMoveTileUpdateTransformer =
+    TileUpdateTransformer.fromHandlers(handleData: (updateEvent, sink) {
+  final mapEvent = updateEvent.mapEvent;
+  final id = mapEvent is MapEventMove ? mapEvent.id : null;
+  if (id?.startsWith(MapControllerPageState._startedId) ?? false) {
+    final parts = id!.split('#')[2].split(',');
+    final lat = double.parse(parts[0]);
+    final lon = double.parse(parts[1]);
+    final zoom = double.parse(parts[2]);
+
+    sink.add(
+      updateEvent.loadOnly(
+        loadCenterOverride: LatLng(lat, lon),
+        loadZoomOverride: zoom,
+      ),
+    );
+  } else if (id == MapControllerPageState._inProgressId) {
+  } else if (id == MapControllerPageState._finishedId) {
+    sink.add(updateEvent.pruneOnly());
+  } else {
+    sink.add(updateEvent);
+  }
+});

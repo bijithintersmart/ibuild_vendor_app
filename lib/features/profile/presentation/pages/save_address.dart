@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ibuild_vendor/core/services/location_services.dart';
+import 'package:ibuild_vendor/core/utils/app_utils/app_logger.dart';
 import 'package:latlong2/latlong.dart';
 
 import 'package:ibuild_vendor/core/theme/app_colors.dart';
@@ -22,6 +24,8 @@ class _SaveAddressScreenState extends State<SaveAddressScreen> {
 
   final MapController _mapController = MapController();
   final initialLocation = const LatLng(25.078377, 55.212439);
+  final widgetKey = GlobalKey<MapControllerPageState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,6 +54,7 @@ class _SaveAddressScreenState extends State<SaveAddressScreen> {
       body: Stack(
         children: [
           MapControllerPage(
+            key: widgetKey,
             mapController: _mapController,
           ),
           Align(
@@ -93,27 +98,39 @@ class _SaveAddressScreenState extends State<SaveAddressScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(8),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 4,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  InkWell(
-                    onTap: () {
-                      _mapController.move(initialLocation, 10);
-                    },
-                    child: Container(
+            InkWell(
+              onTap: () async {
+                try {
+                  if (await LocationService.requestLocationPermission()) {
+                    final pos = await LocationService.fetchLocation();
+                    if (pos != null) {
+                      widgetKey.currentState?.updateMapMarker(
+                          LatLng(pos.latitude, pos.longitude));
+                    }
+                  }
+                } catch (e, stack) {
+                  AppLogger.logError(e);
+                  AppLogger.logInfo(stack);
+                }
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 4,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
                       padding: const EdgeInsets.all(4),
                       decoration: BoxDecoration(
                         color: AppColors.secondary,
@@ -122,16 +139,16 @@ class _SaveAddressScreenState extends State<SaveAddressScreen> {
                       child: const Icon(Icons.my_location,
                           color: Colors.white, size: 18),
                     ),
-                  ),
-                  const SizedBox(width: 8),
-                  Text(
-                    'Locate Me',
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          color: AppColors.secondary,
-                          fontWeight: FontWeight.bold,
-                        ),
-                  ),
-                ],
+                    const SizedBox(width: 8),
+                    Text(
+                      'Locate Me',
+                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                            color: AppColors.secondary,
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
+                  ],
+                ),
               ),
             ),
             const SizedBox(
